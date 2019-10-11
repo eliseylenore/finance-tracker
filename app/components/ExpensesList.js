@@ -11,58 +11,25 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   itemListText,
   itemListTextStrike,
-  circleInactive,
-  circleActive,
   deleteIconColor,
 } from '../utils/colors';
 
 const {height, width} = Dimensions.get('window');
 
 class ExpensesList extends Component {
-  onToggleCircle = () => {
-    const {isCompleted, id, completeItem, incompleteItem} = this.props;
-    if (isCompleted) {
-      incompleteItem(id);
-    } else {
-      completeItem(id);
-    }
-  };
   render() {
     MaterialIcons.loadFont();
     const {text, deleteItem, id, isCompleted} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
-          <TouchableOpacity onPress={this.onToggleCircle}>
-            <View
-              style={[
-                styles.circle,
-                isCompleted
-                  ? {borderColor: circleActive}
-                  : {borderColor: circleInactive},
-              ]}
-            />
-          </TouchableOpacity>
-          <Text
-            style={[
-              styles.text,
-              isCompleted
-                ? {
-                    color: itemListTextStrike,
-                    textDecorationLine: 'line-through',
-                  }
-                : {color: itemListText},
-            ]}>
-            {text}
-          </Text>
+          <Text style={[styles.text]}>{text}</Text>
         </View>
-        {isCompleted ? (
-          <View style={styles.button}>
-            <TouchableOpacity onPressOut={() => deleteItem(id)}>
-              <MaterialIcons name="delete" size={24} color={deleteIconColor} />
-            </TouchableOpacity>
-          </View>
-        ) : null}
+        <View style={styles.button}>
+          <TouchableOpacity onPressOut={() => deleteItem(id)}>
+            <MaterialIcons name="delete" size={24} color={deleteIconColor} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -97,6 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     marginVertical: 15,
+    paddingLeft: 15
   },
   column: {
     flexDirection: 'row',

@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {bg, lightWhite, itemListText} from './utils/colors';
@@ -13,6 +14,7 @@ import Header from './components/Header';
 import Input from './components/input';
 import ExpensesList from './components/ExpensesList';
 import uuid from 'uuid/v1';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const headerTitle = 'Finance Tracker';
 
@@ -25,6 +27,7 @@ class Main extends Component {
       loadingItems: false,
       allItems: {},
       isCompleted: false,
+      addExpenses: false,
     };
   }
 
@@ -50,6 +53,14 @@ class Main extends Component {
     }
   };
 
+  toggleAddExpenses = () => {
+    if (this.state.addExpenses) {
+      this.setState({addExpenses: false});
+    } else {
+      this.setState({addExpenses: true});
+    }
+  };
+
   onDoneAddItem = () => {
     const {inputValue} = this.state;
     if (inputValue != '') {
@@ -65,6 +76,7 @@ class Main extends Component {
         };
         const newState = {
           ...prevState,
+          addExpenses: false,
           inputValue: '',
           allItems: {
             ...prevState.allItems,
@@ -136,12 +148,26 @@ class Main extends Component {
         <View style={styles.centered}>
           <Header title={headerTitle} />
         </View>
-        <View styles={styles.inputContainer}>
-          <Input
-            inputValue={inputValue}
-            onChangeText={this.newInputValue}
-            onDoneAddItem={this.onDoneAddItem}
-          />
+        <View style={styles.inputContainer}>
+          {!this.state.addExpenses ? (
+            <TouchableOpacity onPressOut={this.toggleAddExpenses}>
+              <Text style={styles.text}>
+                Add Expense
+                <MaterialIcons name="add" size={24} color="white" />
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View>
+              <Input
+                inputValue={inputValue}
+                onChangeText={this.newInputValue}
+                onDoneAddItem={this.onDoneAddItem}
+              />
+              <TouchableOpacity onPressOut={this.toggleAddExpenses}>
+                <MaterialIcons name="clear" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
         {loadingItems ? (
           <ScrollView contentContainerStyle={styles.scrollableList}>
@@ -172,13 +198,18 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: bg,
+    paddingLeft: 15,
   },
   centered: {
     alignItems: 'center',
   },
   inputContainer: {
     marginTop: 40,
-    paddingLeft: 15,
+    color: 'white',
+  },
+  text: {
+    color: 'white',
+    fontSize: 24,
   },
 });
 

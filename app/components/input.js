@@ -1,6 +1,8 @@
 import React from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import {StyleSheet, TextInput, Text} from 'react-native';
 import inputPlaceholder from '../utils/colors';
+
+const TEMP_BASE_PRICE = '0';
 
 const Input = ({inputValue, onChangeText, onDoneAddItem}) => (
   <TextInput
@@ -17,6 +19,8 @@ const Input = ({inputValue, onChangeText, onDoneAddItem}) => (
     returnKeyType="done"
     autoCorrect={false}
     blurOnSubmit={true}
+    keyboardType="numeric"
+    defaultValue={TEMP_BASE_PRICE}
     onSubmitEditing={onDoneAddItem}
   />
 );
