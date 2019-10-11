@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Main from './app/Main';
+import Main from './app/Main/Main';
 
 class App extends Component {
   render() {
-    return <Main />
+    return <Main />;
   }
-};
+}
 
 export default App;
