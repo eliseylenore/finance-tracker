@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {TextInput, Text, TouchableOpacity, View} from 'react-native';
-import inputPlaceholder from '../../utils/colors';
 import styles from './styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import inputPlaceholder from '../../utils/colors';
 
 const TEMP_BASE_PRICE = '0';
 
-class Input extends Component {
+class ExpenseInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,13 +15,11 @@ class Input extends Component {
   }
 
   toggleAddExpenses = () => {
-    console.log('toggling expenses ' + this.state.addExpenses);
     if (this.state.addExpenses) {
       this.setState({addExpenses: false});
     } else {
       this.setState({addExpenses: true});
     }
-    console.log('toggling expenses ' + this.state.addExpenses);
   };
 
   render() {
@@ -41,7 +39,7 @@ class Input extends Component {
             </Text>
           </TouchableOpacity>
         ) : (
-          <View>
+          <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
               value={inputValue}
@@ -61,7 +59,7 @@ class Input extends Component {
               onSubmitEditing={onDoneAddItem}
             />
             <TouchableOpacity onPressOut={this.toggleAddExpenses}>
-              <MaterialIcons name="clear" size={24} color="white" />
+              <MaterialIcons name="clear" size={24} color="grey" />
             </TouchableOpacity>
           </View>
         )}
@@ -70,4 +68,4 @@ class Input extends Component {
   }
 }
 
-export default Input;
+export default ExpenseInput;

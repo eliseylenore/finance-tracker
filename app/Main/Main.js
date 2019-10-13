@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Header from '../components/Header/Header';
-import Input from '../components/Input/input';
+import ExpenseInput from '../components/ExpenseInput/ExpenseInput';
 import ExpensesList from '../components/ExpensesList/ExpensesList';
+import SpendingGoalInput from '../components/SpendingGoalInput/SpendingGoalInput';
+import SpendingGoalDisplay from '../components/SpendingGoalDisplay/SpendingGoalDisplay';
 import uuid from 'uuid/v1';
 import styles from './styles';
 
@@ -20,6 +22,8 @@ class Main extends Component {
     super(props);
 
     this.state = {
+      spendingGoal: '',
+      spendingGoalInput: '',
       inputValue: '',
       loadingItems: false,
       allItems: {},
@@ -35,6 +39,13 @@ class Main extends Component {
   newInputValue = value => {
     this.setState({
       inputValue: value,
+    });
+  };
+
+  newGoalValue = value => {
+    console.log(value);
+    this.setState({
+      spendingGoalInput: value,
     });
   };
 
@@ -74,6 +85,15 @@ class Main extends Component {
         };
         this.saveItems(newState.allItems);
         return {...newState};
+      });
+    }
+  };
+
+  onDoneAddGoal = () => {
+    const {spendingGoalInput} = this.state;
+    if (spendingGoalInput != '') {
+      this.setState({
+        spendingGoal: spendingGoalInput,
       });
     }
   };
@@ -130,36 +150,53 @@ class Main extends Component {
   };
 
   render() {
-    const {inputValue, loadingItems, allItems} = this.state;
+    const {
+      inputValue,
+      spendingGoal,
+      spendingGoalInput,
+      loadingItems,
+      allItems,
+    } = this.state;
     return (
       <View style={styles.background}>
         <StatusBar barStyle="light-content" style={styles.container} />
         <View style={styles.centered}>
           <Header title={headerTitle} />
         </View>
-        <View style={styles.inputContainer}>
-          <Input
-            inputValue={inputValue}
-            onChangeText={this.newInputValue}
-            onDoneAddItem={this.onDoneAddItem}
-          />
-        </View>
-        {loadingItems ? (
-          <ScrollView contentContainerStyle={styles.scrollableList}>
-            {Object.values(allItems)
-              .reverse()
-              .map(item => (
-                <ExpensesList
-                  key={item.id}
-                  {...item}
-                  deleteItem={this.deleteItem}
-                  completeItem={this.completeItem}
-                  incompleteItem={this.incompleteItem}
-                />
-              ))}
-          </ScrollView>
+        {spendingGoal ? (
+          <View>
+            <SpendingGoalDisplay goal={spendingGoal} />
+            <View style={styles.inputContainer}>
+              <ExpenseInput
+                inputValue={inputValue}
+                onChangeText={this.newInputValue}
+                onDoneAddItem={this.onDoneAddItem}
+              />
+            </View>
+            {loadingItems ? (
+              <ScrollView contentContainerStyle={styles.scrollableList}>
+                {Object.values(allItems)
+                  .reverse()
+                  .map(item => (
+                    <ExpensesList
+                      key={item.id}
+                      {...item}
+                      deleteItem={this.deleteItem}
+                      completeItem={this.completeItem}
+                      incompleteItem={this.incompleteItem}
+                    />
+                  ))}
+              </ScrollView>
+            ) : (
+              <ActivityIndicator size="large" color="white" />
+            )}
+          </View>
         ) : (
-          <ActivityIndicator size="large" color="white" />
+          <SpendingGoalInput
+            spendingGoalInput={spendingGoalInput}
+            onDoneAddGoal={this.onDoneAddGoal}
+            onChangeText={this.newGoalValue}
+          />
         )}
       </View>
     );

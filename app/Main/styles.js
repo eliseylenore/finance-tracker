@@ -17,8 +17,4 @@ export default (styles = StyleSheet.create({
     marginTop: 40,
     color: 'white',
   },
-  text: {
-    color: 'white',
-    fontSize: 24,
-  },
 }));
