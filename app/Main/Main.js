@@ -52,9 +52,11 @@ class Main extends Component {
   loadingItem = async () => {
     try {
       const allItems = await AsyncStorage.getItem('Todos');
+      const goal = await AsyncStorage.getItem('Goal');
       this.setState({
         loadingItems: true,
         allItems: JSON.parse(allItems) || {},
+        spendingGoal: JSON.parse(goal),
       });
     } catch (err) {
       console.log(err);
