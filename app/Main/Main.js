@@ -93,13 +93,17 @@ class Main extends Component {
     const {spendingGoalInput} = this.state;
     if (spendingGoalInput != '') {
       this.setState({
-        spendingGoal: spendingGoalInput,
+        spendingGoal: parseFloat(spendingGoalInput).toFixed(2),
       });
     }
+    this.saveGoal(parseFloat(spendingGoalInput).toFixed(2));
   };
 
   saveItems = newItem => {
     const saveItem = AsyncStorage.setItem('Todos', JSON.stringify(newItem));
+  };
+  saveGoal = newItem => {
+    const saveItem = AsyncStorage.setItem('Goal', JSON.stringify(newItem));
   };
 
   deleteItem = id => {
@@ -165,8 +169,8 @@ class Main extends Component {
         </View>
         {spendingGoal ? (
           <View>
-            <SpendingGoalDisplay goal={spendingGoal} />
             <View style={styles.inputContainer}>
+              <SpendingGoalDisplay goal={spendingGoal} />
               <ExpenseInput
                 inputValue={inputValue}
                 onChangeText={this.newInputValue}

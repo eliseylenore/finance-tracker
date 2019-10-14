@@ -4,5 +4,6 @@ export default (styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 24,
+    paddingBottom: 15,
   },
 }));

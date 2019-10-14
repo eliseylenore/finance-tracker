@@ -32,11 +32,11 @@ class ExpenseInput extends Component {
     return (
       <View>
         {!this.state.addExpenses ? (
-          <TouchableOpacity onPressOut={this.toggleAddExpenses}>
-            <Text style={styles.text}>
-              Add Expense
-              <MaterialIcons name="add" size={24} color="white" />
-            </Text>
+          <TouchableOpacity
+            onPressOut={this.toggleAddExpenses}
+            style={styles.addExpenseButton}>
+            <Text style={styles.text}>Add Expense</Text>
+            <MaterialIcons name="add" size={24} color="white" />
           </TouchableOpacity>
         ) : (
           <View style={styles.inputContainer}>

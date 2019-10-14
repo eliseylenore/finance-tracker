@@ -38,4 +38,9 @@ export default (styles = StyleSheet.create({
     color: 'white',
     fontSize: 24,
   },
+  addExpenseButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
 }));
