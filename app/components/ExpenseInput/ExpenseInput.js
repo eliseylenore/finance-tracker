@@ -64,7 +64,9 @@ class ExpenseInput extends Component {
               keyboardType="numeric"
             />
             <TouchableOpacity style={styles.addExpenseButton}>
-              <Text onPress={onDoneAddItem}>Submit</Text>
+              <Text style={styles.text} onPress={onDoneAddItem}>
+                Submit
+              </Text>
             </TouchableOpacity>
           </View>
         ) : null}

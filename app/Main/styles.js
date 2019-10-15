@@ -17,4 +17,7 @@ export default (styles = StyleSheet.create({
     marginTop: 40,
     color: 'white',
   },
+  scrollableList: {
+    marginTop: 40,
+  },
 }));

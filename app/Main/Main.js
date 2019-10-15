@@ -14,6 +14,7 @@ import SpendingGoalInput from '../components/SpendingGoalInput/SpendingGoalInput
 import SpendingGoalDisplay from '../components/SpendingGoalDisplay/SpendingGoalDisplay';
 import uuid from 'uuid/v1';
 import styles from './styles';
+import SubTitle from '../components/Subtitle/Subtitle';
 
 const headerTitle = 'Finance Tracker';
 
@@ -183,6 +184,7 @@ class Main extends Component {
             </View>
             {loadingItems ? (
               <ScrollView contentContainerStyle={styles.scrollableList}>
+                <SubTitle subtitle="List of expenses" />
                 {Object.values(allItems)
                   .reverse()
                   .map(item => (

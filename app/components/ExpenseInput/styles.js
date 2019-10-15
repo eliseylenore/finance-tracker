@@ -9,7 +9,6 @@ export default (styles = StyleSheet.create({
     fontSize: 24,
     color: 'grey',
     fontWeight: '400',
-    flex: 1,
     paddingHorizontal: 15,
     flexDirection: 'row',
     width: width - 50,
@@ -33,7 +32,6 @@ export default (styles = StyleSheet.create({
       },
     }),
   },
-  inputContainer: {},
   text: {
     color: 'white',
     fontSize: 24,
