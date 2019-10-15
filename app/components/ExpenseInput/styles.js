@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import {whileStatement} from '@babel/types';
 
 const {height, width} = Dimensions.get('window');
 
@@ -7,10 +8,8 @@ export default (styles = StyleSheet.create({
     paddingTop: 10,
     fontSize: 24,
     color: 'grey',
-    fontWeight: '500',
+    fontWeight: '400',
     flex: 1,
-  },
-  inputContainer: {
     paddingHorizontal: 15,
     flexDirection: 'row',
     width: width - 50,
@@ -34,11 +33,13 @@ export default (styles = StyleSheet.create({
       },
     }),
   },
+  inputContainer: {},
   text: {
     color: 'white',
     fontSize: 24,
   },
   addExpenseButton: {
+    color: 'white',
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'flex-start',

@@ -24,7 +24,8 @@ class Main extends Component {
     this.state = {
       spendingGoal: '',
       spendingGoalInput: '',
-      inputValue: '',
+      expenseDescription: '',
+      expenseAmount: '',
       loadingItems: false,
       allItems: {},
       isCompleted: false,
@@ -36,9 +37,9 @@ class Main extends Component {
     this.loadingItem();
   };
 
-  newInputValue = value => {
+  newInputValue = key => val => {
     this.setState({
-      inputValue: value,
+      [key]: val,
     });
   };
 
@@ -64,15 +65,16 @@ class Main extends Component {
   };
 
   onDoneAddItem = () => {
-    const {inputValue} = this.state;
-    if (inputValue != '') {
+    const {expenseAmount, expenseDescription} = this.state;
+    if (expenseDescription != '' && expenseAmount != '') {
       this.setState(prevState => {
         const id = uuid();
         const newItemObject = {
           [id]: {
             id,
             isCompleted: false,
-            text: inputValue,
+            description: expenseDescription,
+            amount: expenseAmount,
             createdAt: Date.now(),
           },
         };

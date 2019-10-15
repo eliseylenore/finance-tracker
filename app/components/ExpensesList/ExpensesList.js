@@ -6,11 +6,12 @@ import {deleteIconColor} from '../../utils/colors';
 class ExpensesList extends Component {
   render() {
     MaterialIcons.loadFont();
-    const {text, deleteItem, id, isCompleted} = this.props;
+    const {description, amount, deleteItem, id} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
-          <Text style={[styles.text]}>{text}</Text>
+          <Text style={[styles.text]}>{description}</Text>
+          <Text style={[styles.text]}>${parseInt(amount).toFixed(2)}</Text>
         </View>
         <View style={styles.button}>
           <TouchableOpacity onPressOut={() => deleteItem(id)}>
