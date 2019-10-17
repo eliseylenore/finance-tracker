@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  StyleSheet,
+  Text,
   StatusBar,
   View,
   ScrollView,
@@ -29,6 +29,7 @@ class Main extends Component {
       expenseAmount: '',
       loadingItems: false,
       allItems: {},
+      totalSpent: 0,
       isCompleted: false,
       addExpenses: false,
     };
@@ -44,6 +45,15 @@ class Main extends Component {
     });
   };
 
+  findTotalSpent(allItems) {
+    let totalSpent = 0;
+    for (var item in allItems) {
+      console.log(allItems[item].amount);
+      totalSpent += parseInt(allItems[item].amount);
+    }
+    return totalSpent;
+  }
+
   newGoalValue = value => {
     console.log(value);
     this.setState({
@@ -55,7 +65,9 @@ class Main extends Component {
     try {
       const allItems = await AsyncStorage.getItem('Todos');
       const goal = await AsyncStorage.getItem('Goal');
+      const totalSpent = this.findTotalSpent(JSON.parse(allItems) || {});
       this.setState({
+        totalSpent: totalSpent,
         loadingItems: true,
         allItems: JSON.parse(allItems) || {},
         spendingGoal: JSON.parse(goal),
@@ -82,7 +94,9 @@ class Main extends Component {
         const newState = {
           ...prevState,
           addExpenses: false,
-          inputValue: '',
+          expenseAmount: '',
+          expenseDescription: '',
+          totalSpent: prevState.totalSpent + parseInt(expenseAmount),
           allItems: {
             ...prevState.allItems,
             ...newItemObject,
@@ -109,6 +123,14 @@ class Main extends Component {
   };
   saveGoal = newItem => {
     const saveItem = AsyncStorage.setItem('Goal', JSON.stringify(newItem));
+  };
+
+  toggleAddExpenses = () => {
+    if (this.state.addExpenses) {
+      this.setState({addExpenses: false});
+    } else {
+      this.setState({addExpenses: true});
+    }
   };
 
   deleteItem = id => {
@@ -160,7 +182,7 @@ class Main extends Component {
 
   render() {
     const {
-      inputValue,
+      addExpenses,
       spendingGoal,
       spendingGoalInput,
       loadingItems,
@@ -177,14 +199,25 @@ class Main extends Component {
             <View style={styles.inputContainer}>
               <SpendingGoalDisplay goal={spendingGoal} />
               <ExpenseInput
-                inputValue={inputValue}
+                toggleAddExpenses={this.toggleAddExpenses}
+                addExpenses={addExpenses}
                 onChangeText={this.newInputValue}
                 onDoneAddItem={this.onDoneAddItem}
               />
             </View>
             {loadingItems ? (
+              <View>
+                <SubTitle subtitle="Total Spent" />
+                <Text style={styles.text}>
+                  ${this.state.totalSpent.toFixed(2)}
+                </Text>
+              </View>
+            ) : null}
+            {loadingItems ? (
               <ScrollView contentContainerStyle={styles.scrollableList}>
-                <SubTitle subtitle="List of expenses" />
+                {Object.keys(allItems).length ? (
+                  <SubTitle subtitle="List of expenses" />
+                ) : null}
                 {Object.values(allItems)
                   .reverse()
                   .map(item => (

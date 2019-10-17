@@ -7,40 +7,31 @@ import inputPlaceholder from '../../utils/colors';
 class ExpenseInput extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      addExpenses: false,
-    };
   }
-
-  toggleAddExpenses = () => {
-    if (this.state.addExpenses) {
-      this.setState({addExpenses: false});
-    } else {
-      this.setState({addExpenses: true});
-    }
-  };
 
   render() {
     const {
+      addExpenses,
       expenseName,
       expenseAmount,
       onChangeText,
       inputPlaceholder,
       onDoneAddItem,
+      toggleAddExpenses,
     } = this.props;
     return (
       <View>
         <TouchableOpacity
-          onPressOut={this.toggleAddExpenses}
+          onPressOut={toggleAddExpenses}
           style={styles.addExpenseButton}>
           <Text style={styles.text}>Add Expense</Text>
-          {this.state.addExpenses ? (
+          {addExpenses ? (
             <MaterialIcons name="clear" size={24} color="white" />
           ) : (
             <MaterialIcons name="add" size={24} color="white" />
           )}
         </TouchableOpacity>
-        {this.state.addExpenses ? (
+        {addExpenses ? (
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}

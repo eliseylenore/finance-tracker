@@ -20,4 +20,9 @@ export default (styles = StyleSheet.create({
   scrollableList: {
     marginTop: 40,
   },
+  text: {
+    color: 'white',
+    fontSize: 24,
+    paddingBottom: 15,
+  },
 }));
