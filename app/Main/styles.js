@@ -25,4 +25,10 @@ export default (styles = StyleSheet.create({
     fontSize: 24,
     paddingBottom: 15,
   },
+  goalSpentContainer: {
+    flexDirection: 'row',
+  },
+  totalSpent: {
+    marginLeft: 20,
+  },
 }));

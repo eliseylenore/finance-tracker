@@ -38,6 +38,7 @@ export default (styles = StyleSheet.create({
   column: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     width: width / 1.5,
   },
   circle: {

@@ -197,7 +197,17 @@ class Main extends Component {
         {spendingGoal ? (
           <View>
             <View style={styles.inputContainer}>
-              <SpendingGoalDisplay goal={spendingGoal} />
+              <View style={styles.goalSpentContainer}>
+                <SpendingGoalDisplay goal={spendingGoal} />
+                {loadingItems ? (
+                  <View style={styles.totalSpent}>
+                    <SubTitle subtitle="Total spent" />
+                    <Text style={styles.text}>
+                      ${this.state.totalSpent.toFixed(2)}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
               <ExpenseInput
                 toggleAddExpenses={this.toggleAddExpenses}
                 addExpenses={addExpenses}
@@ -205,14 +215,6 @@ class Main extends Component {
                 onDoneAddItem={this.onDoneAddItem}
               />
             </View>
-            {loadingItems ? (
-              <View>
-                <SubTitle subtitle="Total Spent" />
-                <Text style={styles.text}>
-                  ${this.state.totalSpent.toFixed(2)}
-                </Text>
-              </View>
-            ) : null}
             {loadingItems ? (
               <ScrollView contentContainerStyle={styles.scrollableList}>
                 {Object.keys(allItems).length ? (

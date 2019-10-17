@@ -5,7 +5,9 @@ import styles from './styles';
 import {lighterWhite} from '../../utils/colors';
 
 const SubTitle = ({subtitle}) => (
-  <Text style={[{color: lighterWhite}]}>{subtitle.toUpperCase()}</Text>
+  <Text style={[styles.titleText, {color: lighterWhite}]}>
+    {subtitle.toUpperCase()}
+  </Text>
 );
 
 export default SubTitle;

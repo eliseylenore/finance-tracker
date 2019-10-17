@@ -4,13 +4,21 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import {deleteIconColor} from '../../utils/colors';
 class ExpensesList extends Component {
+  calculateDate(dateInMilliseconds) {
+    let date = new Date(dateInMilliseconds);
+    console.log(dateInMilliseconds);
+    let dateString =
+      date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+    return dateString;
+  }
   render() {
     MaterialIcons.loadFont();
-    const {description, amount, deleteItem, id} = this.props;
+    const {description, amount, deleteItem, id, createdAt} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
           <Text style={[styles.text]}>{description}</Text>
+          <Text style={styles.text}>{this.calculateDate(createdAt)}</Text>
           <Text style={[styles.text]}>${parseInt(amount).toFixed(2)}</Text>
         </View>
         <View style={styles.button}>

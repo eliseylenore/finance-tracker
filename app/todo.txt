@@ -1,0 +1,9 @@
+get rid of weird space before expenses list
+add "Add expense" to the top left of expenses list
+add component that shows how much you have left
+add some form validation so you have to enter a number where required.
+Add dates to transactions
+
+Next level: 
+Edit goal/expense
+add categories (gasp!) -> graph of proportions? or just category totals
