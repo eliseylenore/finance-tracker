@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  Alert,
   Text,
   StatusBar,
   View,
@@ -48,14 +49,12 @@ class Main extends Component {
   findTotalSpent(allItems) {
     let totalSpent = 0;
     for (var item in allItems) {
-      console.log(allItems[item].amount);
       totalSpent += parseInt(allItems[item].amount);
     }
     return totalSpent;
   }
 
   newGoalValue = value => {
-    console.log(value);
     this.setState({
       spendingGoalInput: value,
     });
@@ -79,43 +78,59 @@ class Main extends Component {
 
   onDoneAddItem = () => {
     const {expenseAmount, expenseDescription} = this.state;
-    if (expenseDescription != '' && expenseAmount != '') {
-      this.setState(prevState => {
-        const id = uuid();
-        const newItemObject = {
-          [id]: {
-            id,
-            isCompleted: false,
-            description: expenseDescription,
-            amount: expenseAmount,
-            createdAt: Date.now(),
-          },
-        };
-        const newState = {
-          ...prevState,
-          addExpenses: false,
-          expenseAmount: '',
-          expenseDescription: '',
-          totalSpent: prevState.totalSpent + parseInt(expenseAmount),
-          allItems: {
-            ...prevState.allItems,
-            ...newItemObject,
-          },
-        };
-        this.saveItems(newState.allItems);
-        return {...newState};
-      });
+    console.log(expenseDescription.length);
+    console.log(expenseAmount);
+    if (!parseInt(expenseAmount)) {
+      console.log('expense is 0');
+      Alert.alert('Error', 'Amount must be more than 0');
+    } else if (expenseDescription.length < 3) {
+      Alert.alert(
+        'Error',
+        'Expense description must be more than 3 letters long.',
+      );
+    } else {
+      if (expenseDescription != '' && expenseAmount != '') {
+        this.setState(prevState => {
+          const id = uuid();
+          const newItemObject = {
+            [id]: {
+              id,
+              isCompleted: false,
+              description: expenseDescription,
+              amount: expenseAmount,
+              createdAt: Date.now(),
+            },
+          };
+          const newState = {
+            ...prevState,
+            addExpenses: false,
+            expenseAmount: '',
+            expenseDescription: '',
+            totalSpent: prevState.totalSpent + parseInt(expenseAmount),
+            allItems: {
+              ...prevState.allItems,
+              ...newItemObject,
+            },
+          };
+          this.saveItems(newState.allItems);
+          return {...newState};
+        });
+      }
     }
   };
 
   onDoneAddGoal = () => {
     const {spendingGoalInput} = this.state;
-    if (spendingGoalInput != '') {
-      this.setState({
-        spendingGoal: parseFloat(spendingGoalInput).toFixed(2),
-      });
+    if (!spendingGoal) {
+      Alert.alert('Error', 'Must provide a goal larger than 1');
+    } else {
+      if (spendingGoalInput != '') {
+        this.setState({
+          spendingGoal: parseFloat(spendingGoalInput).toFixed(2),
+        });
+      }
+      this.saveGoal(parseFloat(spendingGoalInput).toFixed(2));
     }
-    this.saveGoal(parseFloat(spendingGoalInput).toFixed(2));
   };
 
   saveItems = newItem => {
@@ -136,9 +151,11 @@ class Main extends Component {
   deleteItem = id => {
     this.setState(prevState => {
       const allItems = prevState.allItems;
+      const thisAmount = prevState.totalSpent - allItems[id].amount;
       delete allItems[id];
       const newState = {
         ...prevState,
+        totalSpent: thisAmount,
         ...allItems,
       };
       this.saveItems(newState.allItems);

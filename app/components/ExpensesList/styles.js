@@ -51,4 +51,7 @@ export default (styles = StyleSheet.create({
   button: {
     marginRight: 10,
   },
+  description: {
+    width: width / 3,
+  },
 }));

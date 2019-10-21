@@ -1,8 +1,7 @@
 get rid of weird space before expenses list
 add "Add expense" to the top left of expenses list
 add component that shows how much you have left
-add some form validation so you have to enter a number where required.
-Add dates to transactions
+add comma if amount is in the thousands
 
 Next level: 
 Edit goal/expense

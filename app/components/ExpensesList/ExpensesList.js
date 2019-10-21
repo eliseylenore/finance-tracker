@@ -6,9 +6,8 @@ import {deleteIconColor} from '../../utils/colors';
 class ExpensesList extends Component {
   calculateDate(dateInMilliseconds) {
     let date = new Date(dateInMilliseconds);
-    console.log(dateInMilliseconds);
     let dateString =
-      date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+      date.getMonth() + 1 + '/' + date.getDate() + '/' + (date.getYear() - 100);
     return dateString;
   }
   render() {
@@ -17,7 +16,7 @@ class ExpensesList extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.column}>
-          <Text style={[styles.text]}>{description}</Text>
+          <Text style={[styles.text, styles.description]}>{description}</Text>
           <Text style={styles.text}>{this.calculateDate(createdAt)}</Text>
           <Text style={[styles.text]}>${parseInt(amount).toFixed(2)}</Text>
         </View>
