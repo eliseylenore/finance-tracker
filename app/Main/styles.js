@@ -1,7 +1,15 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {bg, lightWhite, itemListText} from '../utils/colors';
+const {height, width} = Dimensions.get('window');
 
 export default (styles = StyleSheet.create({
+  expensesContainer: {
+    width: width - 50,
+  },
+  expensesHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   container: {
     flex: 1,
   },
@@ -12,13 +20,11 @@ export default (styles = StyleSheet.create({
   },
   centered: {
     alignItems: 'center',
+    marginTop: 40,
   },
   inputContainer: {
     marginTop: 40,
     color: 'white',
-  },
-  scrollableList: {
-    marginTop: 40,
   },
   text: {
     color: 'white',

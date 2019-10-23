@@ -34,12 +34,13 @@ export default (styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: 24,
+    fontSize: 16,
+    fontWeight: '500',
   },
   addExpenseButton: {
     color: 'white',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    alignSelf: 'flex-end',
   },
 }));

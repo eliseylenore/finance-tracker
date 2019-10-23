@@ -10,6 +10,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import Header from '../components/Header/Header';
 import ExpenseInput from '../components/ExpenseInput/ExpenseInput';
+import AddExpensesButton from '../components/ExpenseInput/AddExpensesButton';
 import ExpensesList from '../components/ExpensesList/ExpensesList';
 import SpendingGoalInput from '../components/SpendingGoalInput/SpendingGoalInput';
 import SpendingGoalDisplay from '../components/SpendingGoalDisplay/SpendingGoalDisplay';
@@ -225,33 +226,46 @@ class Main extends Component {
                   </View>
                 ) : null}
               </View>
-              <ExpenseInput
-                toggleAddExpenses={this.toggleAddExpenses}
-                addExpenses={addExpenses}
-                onChangeText={this.newInputValue}
-                onDoneAddItem={this.onDoneAddItem}
-              />
             </View>
-            {loadingItems ? (
-              <ScrollView contentContainerStyle={styles.scrollableList}>
-                {Object.keys(allItems).length ? (
-                  <SubTitle subtitle="List of expenses" />
-                ) : null}
-                {Object.values(allItems)
-                  .reverse()
-                  .map(item => (
-                    <ExpensesList
-                      key={item.id}
-                      {...item}
-                      deleteItem={this.deleteItem}
-                      completeItem={this.completeItem}
-                      incompleteItem={this.incompleteItem}
+            <View styles={styles.expensesContainer}>
+              {addExpenses ? (
+                <View>
+                  <AddExpensesButton
+                    toggleAddExpenses={this.toggleAddExpenses}
+                    addExpenses={addExpenses}
+                  />
+                  <ExpenseInput
+                    onChangeText={this.newInputValue}
+                    onDoneAddItem={this.onDoneAddItem}
+                  />
+                </View>
+              ) : loadingItems ? (
+                <ScrollView contentContainerStyle={styles.scrollableList}>
+                  <View style={styles.expensesHeaderContainer}>
+                    {Object.keys(allItems).length ? (
+                      <SubTitle subtitle="Expenses" />
+                    ) : null}
+                    <AddExpensesButton
+                      toggleAddExpenses={this.toggleAddExpenses}
+                      addExpenses={addExpenses}
                     />
-                  ))}
-              </ScrollView>
-            ) : (
-              <ActivityIndicator size="large" color="white" />
-            )}
+                  </View>
+                  {Object.values(allItems)
+                    .reverse()
+                    .map(item => (
+                      <ExpensesList
+                        key={item.id}
+                        {...item}
+                        deleteItem={this.deleteItem}
+                        completeItem={this.completeItem}
+                        incompleteItem={this.incompleteItem}
+                      />
+                    ))}
+                </ScrollView>
+              ) : (
+                <ActivityIndicator size="large" color="white" />
+              )}
+            </View>
           </View>
         ) : (
           <SpendingGoalInput
