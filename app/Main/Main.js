@@ -16,6 +16,7 @@ import SpendingGoalInput from '../components/SpendingGoalInput/SpendingGoalInput
 import SpendingGoalDisplay from '../components/SpendingGoalDisplay/SpendingGoalDisplay';
 import uuid from 'uuid/v1';
 import styles from './styles';
+import convertToDollars from '../utils/currency';
 import SubTitle from '../components/Subtitle/Subtitle';
 
 const headerTitle = 'Finance Tracker';
@@ -50,7 +51,7 @@ class Main extends Component {
   findTotalSpent(allItems) {
     let totalSpent = 0;
     for (var item in allItems) {
-      totalSpent += parseInt(allItems[item].amount);
+      totalSpent += parseFloat(allItems[item].amount);
     }
     return totalSpent;
   }
@@ -81,7 +82,7 @@ class Main extends Component {
     const {expenseAmount, expenseDescription} = this.state;
     console.log(expenseDescription.length);
     console.log(expenseAmount);
-    if (!parseInt(expenseAmount)) {
+    if (!parseFloat(expenseAmount)) {
       console.log('expense is 0');
       Alert.alert('Error', 'Amount must be more than 0');
     } else if (expenseDescription.length < 3) {
@@ -107,7 +108,7 @@ class Main extends Component {
             addExpenses: false,
             expenseAmount: '',
             expenseDescription: '',
-            totalSpent: prevState.totalSpent + parseInt(expenseAmount),
+            totalSpent: prevState.totalSpent + parseFloat(expenseAmount),
             allItems: {
               ...prevState.allItems,
               ...newItemObject,
@@ -221,7 +222,7 @@ class Main extends Component {
                   <View style={styles.totalSpent}>
                     <SubTitle subtitle="Total spent" />
                     <Text style={styles.text}>
-                      ${this.state.totalSpent.toFixed(2)}
+                      {convertToDollars(this.state.totalSpent)}
                     </Text>
                   </View>
                 ) : null}
@@ -230,10 +231,13 @@ class Main extends Component {
             <View styles={styles}>
               {addExpenses ? (
                 <View>
-                  <AddExpensesButton
-                    toggleAddExpenses={this.toggleAddExpenses}
-                    addExpenses={addExpenses}
-                  />
+                  <View style={styles.expensesHeaderContainer}>
+                    <SubTitle subtitle="Add Expense" />
+                    <AddExpensesButton
+                      toggleAddExpenses={this.toggleAddExpenses}
+                      addExpenses={addExpenses}
+                    />
+                  </View>
                   <ExpenseInput
                     onChangeText={this.newInputValue}
                     onDoneAddItem={this.onDoneAddItem}
@@ -245,6 +249,7 @@ class Main extends Component {
                     {Object.keys(allItems).length ? (
                       <SubTitle subtitle="Expenses" />
                     ) : null}
+
                     <AddExpensesButton
                       toggleAddExpenses={this.toggleAddExpenses}
                       addExpenses={addExpenses}

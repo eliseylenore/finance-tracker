@@ -15,11 +15,13 @@ class ExpenseInput extends Component {
       <TouchableOpacity
         onPressOut={toggleAddExpenses}
         style={styles.addExpenseButton}>
-        <Text style={styles.text}>Add Expense</Text>
         {addExpenses ? (
           <MaterialIcons name="clear" size={18} color="white" />
         ) : (
+          <View style={styles.addExpenseButton}>
+          <Text style={styles.text}>Add Expense</Text>
           <MaterialIcons name="add" size={18} color="white" />
+          </View>
         )}
       </TouchableOpacity>
     );

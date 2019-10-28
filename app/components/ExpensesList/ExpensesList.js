@@ -3,6 +3,7 @@ import {Text, View, Dimensions, Platform, TouchableOpacity} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import {deleteIconColor} from '../../utils/colors';
+import convertToDollars from '../../utils/currency';
 class ExpensesList extends Component {
   calculateDate(dateInMilliseconds) {
     let date = new Date(dateInMilliseconds);
@@ -18,7 +19,9 @@ class ExpensesList extends Component {
         <View style={styles.column}>
           <Text style={[styles.text, styles.description]}>{description}</Text>
           <Text style={styles.text}>{this.calculateDate(createdAt)}</Text>
-          <Text style={[styles.text]}>${parseInt(amount).toFixed(2)}</Text>
+          <Text style={[styles.text]}>
+            {convertToDollars(parseFloat(amount))}
+          </Text>
         </View>
         <View style={styles.button}>
           <TouchableOpacity onPressOut={() => deleteItem(id)}>

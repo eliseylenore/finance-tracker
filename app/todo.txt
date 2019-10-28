@@ -1,5 +1,3 @@
-get rid of weird space before expenses list
-add "Add expense" to the top left of expenses list
 add component that shows how much you have left
 add comma if amount is in the thousands
 

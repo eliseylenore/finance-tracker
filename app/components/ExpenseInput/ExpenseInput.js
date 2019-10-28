@@ -21,13 +21,13 @@ class ExpenseInput extends Component {
       <View>
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, styles.elevated]}
             value={expenseName}
             placeholder="Description"
             onChangeText={onChangeText('expenseDescription')}
           />
           <TextInput
-            style={styles.input}
+            style={[styles.input, styles.elevated]}
             value={expenseAmount}
             onChangeText={onChangeText('expenseAmount')}
             placeholder="Amount"
@@ -41,10 +41,8 @@ class ExpenseInput extends Component {
             blurOnSubmit={true}
             keyboardType="numeric"
           />
-          <TouchableOpacity style={styles.addExpenseButton}>
-            <Text style={styles.text} onPress={onDoneAddItem}>
-              Submit
-            </Text>
+          <TouchableOpacity style={[styles.submitButton, styles.elevated]}>
+            <Text onPress={onDoneAddItem}>Submit</Text>
           </TouchableOpacity>
         </View>
       </View>

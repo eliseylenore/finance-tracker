@@ -1,20 +1,20 @@
 import {StyleSheet, Dimensions} from 'react-native';
 import {whileStatement} from '@babel/types';
-
-const {height, width} = Dimensions.get('window');
+import itemListText from '../../utils/colors';
 
 export default (styles = StyleSheet.create({
   input: {
-    paddingTop: 10,
+    backgroundColor: 'white',
     fontSize: 24,
     color: 'grey',
     fontWeight: '400',
-    paddingHorizontal: 15,
+    paddingTop: 10,
+  },
+  elevated: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    paddingHorizontal: 15,
     borderRadius: 5,
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginVertical: 5,
     ...Platform.select({
       ios: {
@@ -41,5 +41,14 @@ export default (styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     alignSelf: 'flex-end',
+  },
+  submitButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    backgroundColor: 'white',
+    color: itemListText,
+    width: 90,
   },
 }));
