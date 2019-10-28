@@ -227,7 +227,7 @@ class Main extends Component {
                 ) : null}
               </View>
             </View>
-            <View styles={styles.expensesContainer}>
+            <View styles={styles}>
               {addExpenses ? (
                 <View>
                   <AddExpensesButton

@@ -1,11 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 import {bg, lightWhite, itemListText} from '../utils/colors';
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 export default (styles = StyleSheet.create({
-  expensesContainer: {
-    width: width - 50,
-  },
   expensesHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -14,6 +11,7 @@ export default (styles = StyleSheet.create({
     flex: 1,
   },
   background: {
+    paddingHorizontal: 30,
     flex: 1,
     backgroundColor: bg,
     paddingLeft: 15,

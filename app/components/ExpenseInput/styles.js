@@ -11,7 +11,6 @@ export default (styles = StyleSheet.create({
     fontWeight: '400',
     paddingHorizontal: 15,
     flexDirection: 'row',
-    width: width - 50,
     backgroundColor: 'white',
     borderRadius: 5,
     alignItems: 'center',
