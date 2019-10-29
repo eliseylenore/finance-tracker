@@ -122,9 +122,13 @@ class Main extends Component {
   };
 
   onDoneAddGoal = () => {
-    const {spendingGoalInput} = this.state;
-    if (!spendingGoal) {
-      Alert.alert('Error', 'Must provide a goal larger than 1');
+    const {spendingGoalInput, spendingGoal} = this.state;
+    if (!spendingGoalInput) {
+      Alert.alert(
+        'Error',
+        'Must provide a goal larger than 1. Goal is currently ' +
+          spendingGoalInput,
+      );
     } else {
       if (spendingGoalInput != '') {
         this.setState({

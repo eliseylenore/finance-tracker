@@ -1,5 +1,4 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {itemListText} from '../../utils/colors';
 
 const {height, width} = Dimensions.get('window');
 
@@ -11,7 +10,7 @@ export default (styles = StyleSheet.create({
   input: {
     paddingTop: 10,
     fontSize: 24,
-    color: 'grey',
+    color: 'white',
     fontWeight: '500',
   },
 }));

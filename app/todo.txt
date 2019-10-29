@@ -1,6 +1,6 @@
 add component that shows how much you have left
-add comma if amount is in the thousands
 
 Next level: 
 Edit goal/expense
 add categories (gasp!) -> graph of proportions? or just category totals
+Create pop up when people try to delete expense
