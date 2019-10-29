@@ -28,6 +28,7 @@ class Main extends Component {
     this.state = {
       spendingGoal: '',
       spendingGoalInput: '',
+      editGoal: true,
       expenseDescription: '',
       expenseAmount: '',
       loadingItems: false,
@@ -80,8 +81,6 @@ class Main extends Component {
 
   onDoneAddItem = () => {
     const {expenseAmount, expenseDescription} = this.state;
-    console.log(expenseDescription.length);
-    console.log(expenseAmount);
     if (!parseFloat(expenseAmount)) {
       console.log('expense is 0');
       Alert.alert('Error', 'Amount must be more than 0');
@@ -122,7 +121,8 @@ class Main extends Component {
   };
 
   onDoneAddGoal = () => {
-    const {spendingGoalInput, spendingGoal} = this.state;
+    console.log('adding goal');
+    const {spendingGoalInput} = this.state;
     if (!spendingGoalInput) {
       Alert.alert(
         'Error',
@@ -132,10 +132,11 @@ class Main extends Component {
     } else {
       if (spendingGoalInput != '') {
         this.setState({
-          spendingGoal: parseFloat(spendingGoalInput).toFixed(2),
+          editGoal: false,
+          spendingGoal: parseFloat(spendingGoalInput),
         });
       }
-      this.saveGoal(parseFloat(spendingGoalInput).toFixed(2));
+      this.saveGoal(spendingGoalInput);
     }
   };
 
@@ -152,6 +153,12 @@ class Main extends Component {
     } else {
       this.setState({addExpenses: true});
     }
+  };
+
+  toggleEditGoal = () => {
+    this.state.editGoal
+      ? this.setState({editGoal: false})
+      : this.setState({editGoal: true});
   };
 
   deleteItem = id => {
@@ -234,7 +241,10 @@ class Main extends Component {
           <View>
             <View style={styles.inputContainer}>
               <View style={styles.goalSpentContainer}>
-                <SpendingGoalDisplay goal={spendingGoal} />
+                <SpendingGoalDisplay
+                  goal={spendingGoal}
+                  toggleEditGoal={this.toggleEditGoal}
+                />
                 {loadingItems ? (
                   <View style={styles.totalSpent}>
                     <SubTitle subtitle="Total spent" />
@@ -249,49 +259,57 @@ class Main extends Component {
                 ) : null}
               </View>
             </View>
-            <View styles={styles}>
-              {addExpenses ? (
-                <View>
-                  <View style={styles.expensesHeaderContainer}>
-                    <SubTitle subtitle="Add Expense" />
-                    <AddExpensesButton
-                      toggleAddExpenses={this.toggleAddExpenses}
-                      addExpenses={addExpenses}
-                    />
-                  </View>
-                  <ExpenseInput
-                    onChangeText={this.newInputValue}
-                    onDoneAddItem={this.onDoneAddItem}
-                  />
-                </View>
-              ) : loadingItems ? (
-                <ScrollView contentContainerStyle={styles.scrollableList}>
-                  <View style={styles.expensesHeaderContainer}>
-                    {Object.keys(allItems).length ? (
-                      <SubTitle subtitle="Expenses" />
-                    ) : null}
-
-                    <AddExpensesButton
-                      toggleAddExpenses={this.toggleAddExpenses}
-                      addExpenses={addExpenses}
-                    />
-                  </View>
-                  {Object.values(allItems)
-                    .reverse()
-                    .map(item => (
-                      <ExpensesList
-                        key={item.id}
-                        {...item}
-                        deleteItem={this.deleteItem}
-                        completeItem={this.completeItem}
-                        incompleteItem={this.incompleteItem}
+            {this.state.editGoal ? (
+              <SpendingGoalInput
+                spendingGoalInput={spendingGoalInput}
+                onDoneAddGoal={this.onDoneAddGoal}
+                onChangeText={this.newGoalValue}
+              />
+            ) : (
+              <View styles={styles}>
+                {addExpenses ? (
+                  <View>
+                    <View style={styles.expensesHeaderContainer}>
+                      <SubTitle subtitle="Add Expense" />
+                      <AddExpensesButton
+                        toggleAddExpenses={this.toggleAddExpenses}
+                        addExpenses={addExpenses}
                       />
-                    ))}
-                </ScrollView>
-              ) : (
-                <ActivityIndicator size="large" color="white" />
-              )}
-            </View>
+                    </View>
+                    <ExpenseInput
+                      onChangeText={this.newInputValue}
+                      onDoneAddItem={this.onDoneAddItem}
+                    />
+                  </View>
+                ) : loadingItems ? (
+                  <ScrollView contentContainerStyle={styles.scrollableList}>
+                    <View style={styles.expensesHeaderContainer}>
+                      {Object.keys(allItems).length ? (
+                        <SubTitle subtitle="Expenses" />
+                      ) : null}
+
+                      <AddExpensesButton
+                        toggleAddExpenses={this.toggleAddExpenses}
+                        addExpenses={addExpenses}
+                      />
+                    </View>
+                    {Object.values(allItems)
+                      .reverse()
+                      .map(item => (
+                        <ExpensesList
+                          key={item.id}
+                          {...item}
+                          deleteItem={this.deleteItem}
+                          completeItem={this.completeItem}
+                          incompleteItem={this.incompleteItem}
+                        />
+                      ))}
+                  </ScrollView>
+                ) : (
+                  <ActivityIndicator size="large" color="white" />
+                )}
+              </View>
+            )}
           </View>
         ) : (
           <SpendingGoalInput

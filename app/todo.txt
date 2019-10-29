@@ -1,6 +1,6 @@
-add component that shows how much you have left
+
 fix button for submitting an expense - sometimes does not click
 
 Next level: 
-Edit goal/expense
+expense
 add categories (gasp!) -> graph of proportions? or just category totals

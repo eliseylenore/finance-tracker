@@ -6,4 +6,9 @@ export default (styles = StyleSheet.create({
     fontSize: 24,
     paddingBottom: 15,
   },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+  },
 }));
