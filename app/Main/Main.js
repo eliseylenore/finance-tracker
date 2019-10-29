@@ -155,18 +155,30 @@ class Main extends Component {
   };
 
   deleteItem = id => {
-    this.setState(prevState => {
-      const allItems = prevState.allItems;
-      const thisAmount = prevState.totalSpent - allItems[id].amount;
-      delete allItems[id];
-      const newState = {
-        ...prevState,
-        totalSpent: thisAmount,
-        ...allItems,
-      };
-      this.saveItems(newState.allItems);
-      return {...newState};
-    });
+    Alert.alert('Alert', 'Do you really want to delete this item?', [
+      {
+        text: 'OK',
+        onPress: () =>
+          this.setState(prevState => {
+            const allItems = prevState.allItems;
+            const thisAmount = prevState.totalSpent - allItems[id].amount;
+            delete allItems[id];
+            const newState = {
+              ...prevState,
+              totalSpent: thisAmount,
+              ...allItems,
+            };
+            this.saveItems(newState.allItems);
+            return {...newState};
+          }),
+      },
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      ,
+    ]);
   };
 
   completeItem = id => {
@@ -210,6 +222,7 @@ class Main extends Component {
       spendingGoalInput,
       loadingItems,
       allItems,
+      totalSpent,
     } = this.state;
     return (
       <View style={styles.background}>
@@ -225,8 +238,12 @@ class Main extends Component {
                 {loadingItems ? (
                   <View style={styles.totalSpent}>
                     <SubTitle subtitle="Total spent" />
-                    <Text style={styles.text}>
-                      {convertToDollars(this.state.totalSpent)}
+                    <Text
+                      style={[
+                        styles.text,
+                        spendingGoal < totalSpent ? styles.red : null,
+                      ]}>
+                      {convertToDollars(totalSpent)}
                     </Text>
                   </View>
                 ) : null}

@@ -1,8 +1,10 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {bg, lightWhite, itemListText} from '../utils/colors';
-const {width} = Dimensions.get('window');
+import {StyleSheet} from 'react-native';
+import {bg, redText} from '../utils/colors';
 
 export default (styles = StyleSheet.create({
+  red: {
+    color: redText,
+  },
   expensesHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

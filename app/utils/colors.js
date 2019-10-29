@@ -5,3 +5,4 @@ export const lighterWhite = '#f4e4e2';
 export const itemListText = '#555';
 export const itemListTextStrike = '#c4c4cc';
 export const deleteIconColor = '#555';
+export const redText = '#ff4c4c';
