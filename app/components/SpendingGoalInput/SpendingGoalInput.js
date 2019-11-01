@@ -5,6 +5,7 @@ import styles from './styles';
 class SpendingGoalInput extends Component {
   render() {
     const {
+      editGoal,
       spendingGoalInput,
       onChangeText,
       inputPlaceholder,
@@ -13,7 +14,9 @@ class SpendingGoalInput extends Component {
     return (
       <View>
         <Text style={styles.text}>
-          First things first: please input your spending goal.
+          {editGoal
+            ? null
+            : 'First things first: please input your spending goal.'}
         </Text>
         <TextInput
           style={styles.input}

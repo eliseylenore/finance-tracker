@@ -82,10 +82,13 @@ class Main extends Component {
   };
 
   onDoneAddItem = () => {
-    const {expenseAmount, expenseDescription, expenseToEdit} = this.state;
-    console.log(expenseToEdit);
+    const {
+      expenseAmount,
+      expenseDescription,
+      expenseToEdit,
+      editGoal,
+    } = this.state;
     if (!parseFloat(expenseAmount)) {
-      console.log('expense is 0');
       Alert.alert('Error', 'Amount must be more than 0');
     } else if (expenseDescription.length < 3) {
       Alert.alert(
@@ -155,7 +158,6 @@ class Main extends Component {
   };
 
   onDoneAddGoal = () => {
-    console.log('adding goal');
     const {spendingGoalInput} = this.state;
     if (!spendingGoalInput) {
       Alert.alert(
@@ -199,7 +201,6 @@ class Main extends Component {
         expenseDescription: 0,
       });
     } else {
-      console.log('Eyy');
       this.setState(prevState => {
         const allItems = prevState.allItems;
         const newState = {
@@ -289,7 +290,7 @@ class Main extends Component {
       addExpenses,
       spendingGoal,
       spendingGoalInput,
-      itemToEdit,
+      editGoal,
       loadingItems,
       allItems,
       totalSpent,
@@ -326,6 +327,7 @@ class Main extends Component {
             </View>
             {this.state.editGoal ? (
               <SpendingGoalInput
+                editGoal={editGoal}
                 spendingGoalInput={spendingGoalInput}
                 onDoneAddGoal={this.onDoneAddGoal}
                 onChangeText={this.newGoalValue}
@@ -391,6 +393,7 @@ class Main extends Component {
           </View>
         ) : (
           <SpendingGoalInput
+            editGoal={editGoal}
             spendingGoalInput={spendingGoalInput}
             onDoneAddGoal={this.onDoneAddGoal}
             onChangeText={this.newGoalValue}

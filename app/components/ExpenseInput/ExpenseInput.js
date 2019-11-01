@@ -20,7 +20,6 @@ class ExpenseInput extends Component {
     return (
       <View>
         <View style={styles.inputContainer}>
-          <Text>{expenseAmount}!!!</Text>
           <TextInput
             style={[styles.input, styles.elevated]}
             value={expenseName}

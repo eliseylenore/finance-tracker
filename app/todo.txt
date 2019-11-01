@@ -1,6 +1,5 @@
-
-fix button for submitting an expense - sometimes does not click
+fix edit goal so that doesn't look like you're editing for the first time
+fix button for submitting an expense - sometimes does not click?
 
 Next level: 
-edit expenses
 add categories (gasp!) -> graph of proportions? or just category totals
