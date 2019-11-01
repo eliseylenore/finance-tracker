@@ -38,15 +38,9 @@ export default (styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: width / 1.5,
+    width: width / 1.4,
   },
-  circle: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    borderWidth: 3,
-    margin: 10,
-  },
+
   button: {
     marginRight: 10,
   },

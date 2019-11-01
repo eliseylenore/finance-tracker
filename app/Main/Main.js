@@ -28,7 +28,9 @@ class Main extends Component {
     this.state = {
       spendingGoal: '',
       spendingGoalInput: '',
-      editGoal: true,
+      editGoal: false,
+      itemToEdit: '',
+      editExpense: false,
       expenseDescription: '',
       expenseAmount: '',
       loadingItems: false,
@@ -80,7 +82,8 @@ class Main extends Component {
   };
 
   onDoneAddItem = () => {
-    const {expenseAmount, expenseDescription} = this.state;
+    const {expenseAmount, expenseDescription, expenseToEdit} = this.state;
+    console.log(expenseToEdit);
     if (!parseFloat(expenseAmount)) {
       console.log('expense is 0');
       Alert.alert('Error', 'Amount must be more than 0');
@@ -91,31 +94,62 @@ class Main extends Component {
       );
     } else {
       if (expenseDescription != '' && expenseAmount != '') {
-        this.setState(prevState => {
-          const id = uuid();
-          const newItemObject = {
-            [id]: {
-              id,
+        if (expenseToEdit) {
+          this.setState(prevState => {
+            const itemObject = {
+              id: expenseToEdit.id,
               isCompleted: false,
               description: expenseDescription,
               amount: expenseAmount,
-              createdAt: Date.now(),
-            },
-          };
-          const newState = {
-            ...prevState,
-            addExpenses: false,
-            expenseAmount: '',
-            expenseDescription: '',
-            totalSpent: prevState.totalSpent + parseFloat(expenseAmount),
-            allItems: {
-              ...prevState.allItems,
-              ...newItemObject,
-            },
-          };
-          this.saveItems(newState.allItems);
-          return {...newState};
-        });
+              createdAt: expenseToEdit.createdAt,
+            };
+            let prevAmount = prevState.allItems[expenseToEdit.id].amount;
+            prevState.allItems[expenseToEdit.id] = itemObject;
+            const newState = {
+              ...prevState,
+              addExpenses: false,
+              editExpense: false,
+              expenseAmount: '',
+              expenseDescription: '',
+              expenseToEdit: '',
+              totalSpent:
+                prevState.totalSpent + parseFloat(expenseAmount - prevAmount),
+              allItems: {
+                ...prevState.allItems,
+              },
+            };
+            this.saveItems(newState.allItems);
+            return {...newState};
+          });
+        } else {
+          this.setState(prevState => {
+            const id = uuid();
+            const newItemObject = {
+              [id]: {
+                id,
+                isCompleted: false,
+                description: expenseDescription,
+                amount: expenseAmount,
+                createdAt: Date.now(),
+              },
+            };
+            const newState = {
+              ...prevState,
+              addExpenses: false,
+              editExpense: false,
+              expenseAmount: '',
+              expenseDescription: '',
+              expenseToEdit: '',
+              totalSpent: prevState.totalSpent + parseFloat(expenseAmount),
+              allItems: {
+                ...prevState.allItems,
+                ...newItemObject,
+              },
+            };
+            this.saveItems(newState.allItems);
+            return {...newState};
+          });
+        }
       }
     }
   };
@@ -143,6 +177,7 @@ class Main extends Component {
   saveItems = newItem => {
     const saveItem = AsyncStorage.setItem('Todos', JSON.stringify(newItem));
   };
+
   saveGoal = newItem => {
     const saveItem = AsyncStorage.setItem('Goal', JSON.stringify(newItem));
   };
@@ -152,6 +187,32 @@ class Main extends Component {
       this.setState({addExpenses: false});
     } else {
       this.setState({addExpenses: true});
+    }
+  };
+
+  toggleEditExpense = id => {
+    if (this.state.editExpense) {
+      this.setState({
+        editExpense: false,
+        expenseToEdit: '',
+        expenseAmount: 0,
+        expenseDescription: 0,
+      });
+    } else {
+      console.log('Eyy');
+      this.setState(prevState => {
+        const allItems = prevState.allItems;
+        const newState = {
+          ...prevState,
+          ...allItems,
+          editExpense: true,
+          expenseToEdit: prevState.allItems[id],
+          expenseAmount: prevState.allItems[id].amount,
+          expenseDescription: prevState.allItems[id].description,
+        };
+        this.saveItems(newState.allItems);
+        return {...newState};
+      });
     }
   };
 
@@ -224,12 +285,16 @@ class Main extends Component {
 
   render() {
     const {
+      editExpense,
       addExpenses,
       spendingGoal,
       spendingGoalInput,
+      itemToEdit,
       loadingItems,
       allItems,
       totalSpent,
+      expenseDescription,
+      expenseAmount,
     } = this.state;
     return (
       <View style={styles.background}>
@@ -281,6 +346,18 @@ class Main extends Component {
                       onDoneAddItem={this.onDoneAddItem}
                     />
                   </View>
+                ) : editExpense ? (
+                  <View>
+                    <View style={styles.expensesHeaderContainer}>
+                      <SubTitle subtitle="Edit Expense" />
+                    </View>
+                    <ExpenseInput
+                      expenseName={expenseDescription}
+                      expenseAmount={expenseAmount}
+                      onChangeText={this.newInputValue}
+                      onDoneAddItem={this.onDoneAddItem}
+                    />
+                  </View>
                 ) : loadingItems ? (
                   <ScrollView contentContainerStyle={styles.scrollableList}>
                     <View style={styles.expensesHeaderContainer}>
@@ -299,6 +376,7 @@ class Main extends Component {
                         <ExpensesList
                           key={item.id}
                           {...item}
+                          toggleEditExpense={this.toggleEditExpense}
                           deleteItem={this.deleteItem}
                           completeItem={this.completeItem}
                           incompleteItem={this.incompleteItem}

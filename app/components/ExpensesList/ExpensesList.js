@@ -13,7 +13,14 @@ class ExpensesList extends Component {
   }
   render() {
     MaterialIcons.loadFont();
-    const {description, amount, deleteItem, id, createdAt} = this.props;
+    const {
+      description,
+      amount,
+      deleteItem,
+      id,
+      createdAt,
+      toggleEditExpense,
+    } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
@@ -22,6 +29,11 @@ class ExpensesList extends Component {
           <Text style={[styles.text]}>
             {convertToDollars(parseFloat(amount))}
           </Text>
+        </View>
+        <View>
+          <TouchableOpacity onPressOut={() => toggleEditExpense(id)}>
+            <MaterialIcons name="edit" size={18} color={deleteIconColor} />
+          </TouchableOpacity>
         </View>
         <View style={styles.button}>
           <TouchableOpacity onPressOut={() => deleteItem(id)}>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {TextInput, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class ExpenseInput extends Component {
   constructor(props) {
@@ -9,15 +10,17 @@ class ExpenseInput extends Component {
 
   render() {
     const {
-      expenseName,
-      expenseAmount,
       onChangeText,
       inputPlaceholder,
       onDoneAddItem,
+      expenseName,
+      expenseAmount,
     } = this.props;
+
     return (
       <View>
         <View style={styles.inputContainer}>
+          <Text>{expenseAmount}!!!</Text>
           <TextInput
             style={[styles.input, styles.elevated]}
             value={expenseName}
