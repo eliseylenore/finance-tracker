@@ -16,6 +16,7 @@ class ExpensesList extends Component {
     const {
       description,
       amount,
+      category,
       deleteItem,
       id,
       createdAt,
@@ -24,7 +25,9 @@ class ExpensesList extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.column}>
-          <Text style={[styles.text, styles.description]}>{description}</Text>
+          <Text style={[styles.text, styles.description]}>
+            {description} {category}
+          </Text>
           <Text style={styles.text}>{this.calculateDate(createdAt)}</Text>
           <Text style={[styles.text]}>
             {convertToDollars(parseFloat(amount))}

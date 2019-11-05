@@ -33,6 +33,7 @@ class Main extends Component {
       editExpense: false,
       expenseDescription: '',
       expenseAmount: '',
+      expenseCategory: 'rent',
       loadingItems: false,
       allItems: {},
       totalSpent: 0,
@@ -46,9 +47,15 @@ class Main extends Component {
   };
 
   newInputValue = key => val => {
+    console.log(key, val);
     this.setState({
       [key]: val,
     });
+  };
+
+  onChangePicker = itemValue => {
+    console.log('hi', itemValue);
+    this.setState({expenseCategory: itemValue});
   };
 
   findTotalSpent(allItems) {
@@ -86,6 +93,7 @@ class Main extends Component {
       expenseAmount,
       expenseDescription,
       expenseToEdit,
+      expenseCategory,
       editGoal,
     } = this.state;
     if (!parseFloat(expenseAmount)) {
@@ -103,6 +111,7 @@ class Main extends Component {
               id: expenseToEdit.id,
               isCompleted: false,
               description: expenseDescription,
+              category: expenseCategory,
               amount: expenseAmount,
               createdAt: expenseToEdit.createdAt,
             };
@@ -114,6 +123,7 @@ class Main extends Component {
               editExpense: false,
               expenseAmount: '',
               expenseDescription: '',
+              expenseCategory: '',
               expenseToEdit: '',
               totalSpent:
                 prevState.totalSpent + parseFloat(expenseAmount - prevAmount),
@@ -131,6 +141,7 @@ class Main extends Component {
               [id]: {
                 id,
                 isCompleted: false,
+                category: expenseCategory,
                 description: expenseDescription,
                 amount: expenseAmount,
                 createdAt: Date.now(),
@@ -142,6 +153,7 @@ class Main extends Component {
               editExpense: false,
               expenseAmount: '',
               expenseDescription: '',
+              expenseCategory: '',
               expenseToEdit: '',
               totalSpent: prevState.totalSpent + parseFloat(expenseAmount),
               allItems: {
@@ -296,6 +308,7 @@ class Main extends Component {
       totalSpent,
       expenseDescription,
       expenseAmount,
+      expenseCategory,
     } = this.state;
     return (
       <View style={styles.background}>
@@ -331,6 +344,7 @@ class Main extends Component {
                 spendingGoalInput={spendingGoalInput}
                 onDoneAddGoal={this.onDoneAddGoal}
                 onChangeText={this.newGoalValue}
+                onChangePicker={this.onChangePicker}
               />
             ) : (
               <View styles={styles}>
@@ -339,11 +353,17 @@ class Main extends Component {
                     <View style={styles.expensesHeaderContainer}>
                       <SubTitle subtitle="Add Expense" />
                       <AddExpensesButton
+                        expenseCategory={expenseCategory}
+                        expenseName={expenseDescription}
+                        expenseAmount={expenseAmount}
                         toggleAddExpenses={this.toggleAddExpenses}
                         addExpenses={addExpenses}
                       />
                     </View>
                     <ExpenseInput
+                        expenseCategory={expenseCategory}
+                        expenseName={expenseDescription}
+                        expenseAmount={expenseAmount}
                       onChangeText={this.newInputValue}
                       onDoneAddItem={this.onDoneAddItem}
                     />
@@ -354,8 +374,10 @@ class Main extends Component {
                       <SubTitle subtitle="Edit Expense" />
                     </View>
                     <ExpenseInput
+                      expenseCategory={expenseCategory}
                       expenseName={expenseDescription}
                       expenseAmount={expenseAmount}
+                      onChangePicker={this.onChangePicker}
                       onChangeText={this.newInputValue}
                       onDoneAddItem={this.onDoneAddItem}
                     />
