@@ -47,15 +47,10 @@ class Main extends Component {
   };
 
   newInputValue = key => val => {
-    console.log(key, val);
+    console.log('hi', key, val);
     this.setState({
       [key]: val,
     });
-  };
-
-  onChangePicker = itemValue => {
-    console.log('hi', itemValue);
-    this.setState({expenseCategory: itemValue});
   };
 
   findTotalSpent(allItems) {
@@ -255,7 +250,6 @@ class Main extends Component {
       },
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
       ,
@@ -361,9 +355,9 @@ class Main extends Component {
                       />
                     </View>
                     <ExpenseInput
-                        expenseCategory={expenseCategory}
-                        expenseName={expenseDescription}
-                        expenseAmount={expenseAmount}
+                      expenseCategory={expenseCategory}
+                      expenseName={expenseDescription}
+                      expenseAmount={expenseAmount}
                       onChangeText={this.newInputValue}
                       onDoneAddItem={this.onDoneAddItem}
                     />
