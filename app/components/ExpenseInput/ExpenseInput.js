@@ -9,6 +9,8 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import styles from './styles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {deleteIconColor} from '../../utils/colors';
 
 class ExpenseInput extends Component {
   constructor(props) {
@@ -34,19 +36,15 @@ class ExpenseInput extends Component {
     const pickerValues = [
       {
         title: 'Rent',
-        value: 'rent',
       },
       {
         title: 'Donations',
-        value: 'donations',
       },
       {
         title: 'Food',
-        value: 'food',
       },
       {
         title: 'Gas',
-        value: 'gas',
       },
     ];
     const {
@@ -60,7 +58,6 @@ class ExpenseInput extends Component {
 
     return (
       <View>
-        <Text>{expenseCategory}</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={[styles.input, styles.elevated]}
@@ -84,8 +81,22 @@ class ExpenseInput extends Component {
             blurOnSubmit={true}
             keyboardType="numeric"
           />
-          <TouchableOpacity onPress={() => this.togglePicker()}>
-            <Text>Select a category</Text>
+          <TouchableOpacity
+            style={[
+              styles.elevated,
+              styles.input,
+              {
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 10,
+                justifyContent: 'space-between',
+              },
+            ]}
+            onPress={() => this.togglePicker()}>
+            <Text style={[styles.input, {paddingTop: 0}]}>
+              {expenseCategory ? expenseCategory : 'Expense Category'}
+            </Text>
+            <MaterialIcons name="edit" size={24} color={deleteIconColor} />
           </TouchableOpacity>
           <Modal
             animationType="slide"
@@ -97,13 +108,14 @@ class ExpenseInput extends Component {
                 backgroundColor: 'white',
                 padding: 10,
                 bottom: 20,
-                left: 20,
-                right: 20,
+                left: 15,
+                right: 15,
+                borderRadius: 5,
                 position: 'absolute',
                 alignItems: 'center',
               }}>
               <Text style={[styles.input, {fontWeight: 'bold'}]}>
-                Please pick a value
+                Categories
               </Text>
               {pickerValues.map((value, index) => {
                 return (
@@ -114,34 +126,20 @@ class ExpenseInput extends Component {
                       paddingBottom: 4,
                     }}
                     onPress={() =>
-                      this.selectPicker('expenseCategory', value.value)
+                      this.selectPicker('expenseCategory', value.title)
                     }>
                     <Text style={styles.input}>{value.title}</Text>
                   </TouchableHighlight>
                 );
               })}
 
-              <TouchableHighlight style={{paddingTop: 4, paddingBottom: 4}}>
+              <TouchableHighlight
+                onPress={() => this.togglePicker()}
+                style={{paddingTop: 4, paddingBottom: 4}}>
                 <Text style={[styles.input, {color: '#999'}]}>Cancel</Text>
               </TouchableHighlight>
             </View>
           </Modal>
-          {/* <Picker
-            selectedValue={expenseCategory}
-            onValueChange={onChangeText('expenseCategory')}>
-            <Picker.Item
-              style={[styles.input, styles.elevated]}
-              label="Category"
-              value=""
-            />
-            <Picker.Item
-              style={[styles.input, styles.elevated]}
-              label="Food"
-              value="food"
-            />
-            <Picker.Item label="Rent" value="rent" />
-            <Picker.Item label="Donations" value="donations" />
-          </Picker> */}
           <TouchableOpacity style={[styles.submitButton, styles.elevated]}>
             <Text onPress={onDoneAddItem}>Submit</Text>
           </TouchableOpacity>

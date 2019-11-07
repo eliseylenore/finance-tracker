@@ -33,7 +33,7 @@ class Main extends Component {
       editExpense: false,
       expenseDescription: '',
       expenseAmount: '',
-      expenseCategory: 'rent',
+      expenseCategory: '',
       loadingItems: false,
       allItems: {},
       totalSpent: 0,

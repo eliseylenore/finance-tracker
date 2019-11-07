@@ -1,5 +1,2 @@
-fix edit goal so that doesn't look like you're editing for the first time
-fix button for submitting an expense - sometimes does not click?
-
-Next level: 
-add categories (gasp!) -> graph of proportions? or just category totals
+Center everything on the app (right now everything leans to the left within the container)
+Make add expense it's own modal, to reduce visual clutter
