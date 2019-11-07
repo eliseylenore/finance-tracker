@@ -11,6 +11,7 @@ class ExpensesList extends Component {
       date.getMonth() + 1 + '/' + date.getDate() + '/' + (date.getYear() - 100);
     return dateString;
   }
+
   render() {
     MaterialIcons.loadFont();
     const {
@@ -22,12 +23,21 @@ class ExpensesList extends Component {
       createdAt,
       toggleEditExpense,
     } = this.props;
+    const pickerIcons = {
+      Rent: 'home',
+      Donations: 'people',
+      Food: 'shopping-cart',
+      Gas: 'local-gas-station',
+    };
     return (
       <View style={styles.container}>
         <View style={styles.column}>
-          <Text style={[styles.text, styles.description]}>
-            {description} {category}
-          </Text>
+          <MaterialIcons
+            name={pickerIcons[category]}
+            size={18}
+            color={deleteIconColor}
+          />
+          <Text style={[styles.text, styles.description]}>{description}</Text>
           <Text style={styles.text}>{this.calculateDate(createdAt)}</Text>
           <Text style={[styles.text]}>
             {convertToDollars(parseFloat(amount))}
@@ -38,7 +48,7 @@ class ExpensesList extends Component {
             <MaterialIcons name="edit" size={18} color={deleteIconColor} />
           </TouchableOpacity>
         </View>
-        <View style={styles.button}>
+        <View>
           <TouchableOpacity onPressOut={() => deleteItem(id)}>
             <MaterialIcons name="delete" size={24} color={deleteIconColor} />
           </TouchableOpacity>

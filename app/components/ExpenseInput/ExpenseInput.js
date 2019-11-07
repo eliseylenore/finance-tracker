@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Picker,
   Modal,
   TouchableHighlight,
 } from 'react-native';
@@ -47,6 +46,13 @@ class ExpenseInput extends Component {
         title: 'Gas',
       },
     ];
+    const pickerIcons = {
+      Rent: 'home',
+      Donations: 'people',
+      Food: 'shopping-cart',
+      Gas: 'local-gas-station',
+    };
+
     const {
       onChangeText,
       inputPlaceholder,
@@ -93,9 +99,23 @@ class ExpenseInput extends Component {
               },
             ]}
             onPress={() => this.togglePicker()}>
-            <Text style={[styles.input, {paddingTop: 0}]}>
-              {expenseCategory ? expenseCategory : 'Expense Category'}
-            </Text>
+            <View style={{flexDirection: 'row'}}>
+              {expenseCategory ? (
+                <MaterialIcons
+                  style={{alignSelf: 'center'}}
+                  name={pickerIcons[expenseCategory]}
+                  size={24}
+                  color={deleteIconColor}
+                />
+              ) : null}
+              <Text
+                style={[
+                  styles.input,
+                  {paddingTop: 0, alignSelf: 'flex-start'},
+                ]}>
+                {expenseCategory ? ' ' + expenseCategory : 'Expense category'}
+              </Text>
+            </View>
             <MaterialIcons name="edit" size={24} color={deleteIconColor} />
           </TouchableOpacity>
           <Modal
@@ -119,17 +139,25 @@ class ExpenseInput extends Component {
               </Text>
               {pickerValues.map((value, index) => {
                 return (
-                  <TouchableHighlight
+                  <TouchableOpacity
                     key={index}
                     style={{
                       paddingTop: 4,
                       paddingBottom: 4,
+                      flexDirection: 'row',
+                      alignItems: 'center',
                     }}
                     onPress={() =>
                       this.selectPicker('expenseCategory', value.title)
                     }>
-                    <Text style={styles.input}>{value.title}</Text>
-                  </TouchableHighlight>
+                    <MaterialIcons
+                      style={styles.input}
+                      name={pickerIcons[value.title]}
+                      size={24}
+                      color={deleteIconColor}
+                    />
+                    <Text style={styles.input}> {value.title} </Text>
+                  </TouchableOpacity>
                 );
               })}
 

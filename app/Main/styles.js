@@ -13,10 +13,10 @@ export default (styles = StyleSheet.create({
     flex: 1,
   },
   background: {
-    paddingHorizontal: 30,
     flex: 1,
     backgroundColor: bg,
     paddingLeft: 15,
+    paddingRight: 15,
   },
   centered: {
     alignItems: 'center',

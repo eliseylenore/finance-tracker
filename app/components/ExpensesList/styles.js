@@ -5,6 +5,7 @@ const {height, width} = Dimensions.get('window');
 
 export default (styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 10,
     flexDirection: 'row',
     borderRadius: 5,
     backgroundColor: 'white',
@@ -39,10 +40,6 @@ export default (styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: width / 1.4,
-  },
-
-  button: {
-    marginRight: 10,
   },
   description: {
     width: width / 3,

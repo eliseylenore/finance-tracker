@@ -1,2 +1,2 @@
-Center everything on the app (right now everything leans to the left within the container)
 Make add expense it's own modal, to reduce visual clutter
+add Categories page, so you can see how much you spent by category
