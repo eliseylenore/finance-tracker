@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {deleteIconColor} from '../../utils/colors';
+import {deleteIconColor, inputPlaceholder} from '../../utils/colors';
 
 class ExpenseInput extends Component {
   constructor(props) {
@@ -34,6 +34,9 @@ class ExpenseInput extends Component {
   render() {
     const pickerValues = [
       {
+        title: 'None',
+      },
+      {
         title: 'Rent',
       },
       {
@@ -55,19 +58,28 @@ class ExpenseInput extends Component {
 
     const {
       onChangeText,
-      inputPlaceholder,
       onDoneAddItem,
       expenseName,
       expenseAmount,
       expenseCategory,
+      editExpense,
+      addExpenses,
+      toggleEditExpense,
+      toggleAddExpenses,
     } = this.props;
 
     return (
-      <View>
+      <Modal animationType="slide">
         <View style={styles.inputContainer}>
+          <TouchableOpacity style={{alignSelf: 'flex-end'}}>
+            <Text onPress={editExpense ? toggleEditExpense : toggleAddExpenses}>
+              <MaterialIcons name="clear" size={18} color="grey" />
+            </Text>
+          </TouchableOpacity>
           <TextInput
             style={[styles.input, styles.elevated]}
             value={expenseName}
+            placeholderTextColor={inputPlaceholder.toString()}
             placeholder="Description"
             onChangeText={onChangeText('expenseDescription')}
           />
@@ -100,7 +112,7 @@ class ExpenseInput extends Component {
             ]}
             onPress={() => this.togglePicker()}>
             <View style={{flexDirection: 'row'}}>
-              {expenseCategory ? (
+              {pickerIcons[expenseCategory] ? (
                 <MaterialIcons
                   style={{alignSelf: 'center'}}
                   name={pickerIcons[expenseCategory]}
@@ -111,7 +123,8 @@ class ExpenseInput extends Component {
               <Text
                 style={[
                   styles.input,
-                  {paddingTop: 0, alignSelf: 'flex-start'},
+                  {paddingTop: 0},
+                  {color: !expenseCategory ? inputPlaceholder : 'grey'},
                 ]}>
                 {expenseCategory ? ' ' + expenseCategory : 'Expense category'}
               </Text>
@@ -124,16 +137,19 @@ class ExpenseInput extends Component {
             transparent={true}
             onRequestClose={() => console.log('close requested')}>
             <View
-              style={{
-                backgroundColor: 'white',
-                padding: 10,
-                bottom: 20,
-                left: 15,
-                right: 15,
-                borderRadius: 5,
-                position: 'absolute',
-                alignItems: 'center',
-              }}>
+              style={[
+                {
+                  backgroundColor: 'white',
+                  padding: 10,
+                  bottom: 20,
+                  left: 15,
+                  right: 15,
+                  borderRadius: 5,
+                  position: 'absolute',
+                  alignItems: 'center',
+                },
+                styles.modalElevated,
+              ]}>
               <Text style={[styles.input, {fontWeight: 'bold'}]}>
                 Categories
               </Text>
@@ -150,29 +166,25 @@ class ExpenseInput extends Component {
                     onPress={() =>
                       this.selectPicker('expenseCategory', value.title)
                     }>
-                    <MaterialIcons
-                      style={styles.input}
-                      name={pickerIcons[value.title]}
-                      size={24}
-                      color={deleteIconColor}
-                    />
+                    {value.title !== 'None' ? (
+                      <MaterialIcons
+                        style={styles.input}
+                        name={pickerIcons[value.title]}
+                        size={24}
+                        color={deleteIconColor}
+                      />
+                    ) : null}
                     <Text style={styles.input}> {value.title} </Text>
                   </TouchableOpacity>
                 );
               })}
-
-              <TouchableHighlight
-                onPress={() => this.togglePicker()}
-                style={{paddingTop: 4, paddingBottom: 4}}>
-                <Text style={[styles.input, {color: '#999'}]}>Cancel</Text>
-              </TouchableHighlight>
             </View>
           </Modal>
           <TouchableOpacity style={[styles.submitButton, styles.elevated]}>
             <Text onPress={onDoneAddItem}>Submit</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Modal>
     );
   }
 }

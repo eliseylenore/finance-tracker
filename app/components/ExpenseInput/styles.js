@@ -31,6 +31,22 @@ export default (styles = StyleSheet.create({
       },
     }),
   },
+  modalElevated: {
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgb(50,50,50)',
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+          height: 2,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
   text: {
     color: 'white',
     fontSize: 16,
@@ -50,5 +66,9 @@ export default (styles = StyleSheet.create({
     backgroundColor: 'white',
     color: itemListText,
     width: 90,
+  },
+  inputContainer: {
+    marginTop: 40,
+    marginHorizontal: 15,
   },
 }));

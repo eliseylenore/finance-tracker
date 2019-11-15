@@ -216,6 +216,7 @@ class Main extends Component {
           editExpense: true,
           expenseToEdit: prevState.allItems[id],
           expenseAmount: prevState.allItems[id].amount,
+          expenseCategory: prevState.allItems[id].category,
           expenseDescription: prevState.allItems[id].description,
         };
         this.saveItems(newState.allItems);
@@ -338,7 +339,6 @@ class Main extends Component {
                 spendingGoalInput={spendingGoalInput}
                 onDoneAddGoal={this.onDoneAddGoal}
                 onChangeText={this.newGoalValue}
-                onChangePicker={this.onChangePicker}
               />
             ) : (
               <View styles={styles}>
@@ -355,6 +355,8 @@ class Main extends Component {
                       />
                     </View>
                     <ExpenseInput
+                      addExpenses={addExpenses}
+                      toggleAddExpenses={this.toggleAddExpenses}
                       expenseCategory={expenseCategory}
                       expenseName={expenseDescription}
                       expenseAmount={expenseAmount}
@@ -368,10 +370,11 @@ class Main extends Component {
                       <SubTitle subtitle="Edit Expense" />
                     </View>
                     <ExpenseInput
+                      editExpense={editExpense}
+                      toggleEditExpense={this.toggleEditExpense}
                       expenseCategory={expenseCategory}
                       expenseName={expenseDescription}
                       expenseAmount={expenseAmount}
-                      onChangePicker={this.onChangePicker}
                       onChangeText={this.newInputValue}
                       onDoneAddItem={this.onDoneAddItem}
                     />

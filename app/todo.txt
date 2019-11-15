@@ -1,2 +1,3 @@
 Make add expense it's own modal, to reduce visual clutter
 add Categories page, so you can see how much you spent by category
+Make app save data for each month, reset when the month is up.
