@@ -14,6 +14,7 @@ import AddExpensesButton from '../components/ExpenseInput/AddExpensesButton';
 import ExpensesList from '../components/ExpensesList/ExpensesList';
 import SpendingGoalInput from '../components/SpendingGoalInput/SpendingGoalInput';
 import SpendingGoalDisplay from '../components/SpendingGoalDisplay/SpendingGoalDisplay';
+import ProgressBar from '../components/ProgressBar/ProgressBar';
 import uuid from 'uuid/v1';
 import styles from './styles';
 import convertToDollars from '../utils/currency';
@@ -332,6 +333,10 @@ class Main extends Component {
                   </View>
                 ) : null}
               </View>
+              <ProgressBar
+                spendingGoal={spendingGoal}
+                totalSpent={totalSpent}
+              />
             </View>
             {this.state.editGoal ? (
               <SpendingGoalInput
