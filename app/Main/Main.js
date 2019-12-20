@@ -20,7 +20,7 @@ import styles from './styles';
 import convertToDollars from '../utils/currency';
 import SubTitle from '../components/Subtitle/Subtitle';
 const headerTitle = 'Finance Tracker';
-import firebaseConfig from '../constants/firebase';
+import firebaseConfig from '../constants/firebaseConfig';
 import firebase from 'firebase';
 import moment from 'moment';
 
