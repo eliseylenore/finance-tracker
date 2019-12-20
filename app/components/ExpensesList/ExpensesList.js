@@ -18,6 +18,7 @@ class ExpensesList extends Component {
       description,
       amount,
       category,
+      date,
       deleteItem,
       id,
       createdAt,
@@ -38,7 +39,7 @@ class ExpensesList extends Component {
             color={deleteIconColor}
           />
           <Text style={[styles.text, styles.description]}>{description}</Text>
-          <Text style={styles.text}>{this.calculateDate(createdAt)}</Text>
+          <Text style={styles.text}>{date}</Text>
           <Text style={[styles.text]}>
             {convertToDollars(parseFloat(amount))}
           </Text>

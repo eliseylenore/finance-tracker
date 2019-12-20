@@ -11,7 +11,6 @@ class ExpenseInput extends Component {
 
     this.state = {
       pickerDisplay: false,
-      date: new Date(),
       mode: 'date',
       show: false,
     };
@@ -61,6 +60,7 @@ class ExpenseInput extends Component {
       expenseCategory,
       editExpense,
       addExpenses,
+      expenseDate,
       toggleEditExpense,
       toggleAddExpenses,
     } = this.props;
@@ -179,12 +179,12 @@ class ExpenseInput extends Component {
           </Modal>
           <DatePicker
             style={{width: 200}}
-            date={this.state.date}
+            date={expenseDate}
             mode="date"
             placeholder="select date"
-            format="YYYY-MM-DD"
-            minDate="2019-05-01"
-            maxDate="2029-06-01"
+            format="l"
+            minDate="01/01/2019"
+            maxDate="01/01/2029"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
@@ -199,9 +199,7 @@ class ExpenseInput extends Component {
               },
               // ... You can check the source to find the other keys.
             }}
-            onDateChange={date => {
-              this.setState({date: date});
-            }}
+            onDateChange={onChangeText('expenseDate')}
           />
           <TouchableOpacity style={[styles.submitButton, styles.elevated]}>
             <Text onPress={onDoneAddItem}>Submit</Text>

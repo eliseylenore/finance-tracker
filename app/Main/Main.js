@@ -19,8 +19,10 @@ import uuid from 'uuid/v1';
 import styles from './styles';
 import convertToDollars from '../utils/currency';
 import SubTitle from '../components/Subtitle/Subtitle';
-
 const headerTitle = 'Finance Tracker';
+import firebaseConfig from '../constants/firebase';
+import firebase from 'firebase';
+import moment from 'moment';
 
 class Main extends Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class Main extends Component {
       expenseDescription: '',
       expenseAmount: '',
       expenseCategory: '',
+      expenseDate: new Date(),
       loadingItems: false,
       allItems: {},
       totalSpent: 0,
@@ -44,6 +47,10 @@ class Main extends Component {
   }
 
   componentDidMount = () => {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
     this.loadingItem();
   };
 
@@ -90,6 +97,7 @@ class Main extends Component {
       expenseDescription,
       expenseToEdit,
       expenseCategory,
+      expenseDate,
       editGoal,
     } = this.state;
     if (!parseFloat(expenseAmount)) {
@@ -109,8 +117,13 @@ class Main extends Component {
               description: expenseDescription,
               category: expenseCategory,
               amount: expenseAmount,
-              createdAt: expenseToEdit.createdAt,
+              date: expenseDate,
             };
+            console.log('adding');
+            firebase
+              .database()
+              .ref('expenses' + expenseToEdit.id)
+              .set(itemObject);
             let prevAmount = prevState.allItems[expenseToEdit.id].amount;
             prevState.allItems[expenseToEdit.id] = itemObject;
             const newState = {
@@ -121,6 +134,7 @@ class Main extends Component {
               expenseDescription: '',
               expenseCategory: '',
               expenseToEdit: '',
+              expenseDate: new Date(),
               totalSpent:
                 prevState.totalSpent + parseFloat(expenseAmount - prevAmount),
               allItems: {
@@ -140,9 +154,13 @@ class Main extends Component {
                 category: expenseCategory,
                 description: expenseDescription,
                 amount: expenseAmount,
-                createdAt: Date.now(),
+                date: expenseDate,
               },
             };
+            firebase
+              .database()
+              .ref('expenses' + id)
+              .set(newItemObject[id]);
             const newState = {
               ...prevState,
               addExpenses: false,
@@ -219,6 +237,7 @@ class Main extends Component {
           expenseAmount: prevState.allItems[id].amount,
           expenseCategory: prevState.allItems[id].category,
           expenseDescription: prevState.allItems[id].description,
+          expenseState: prevState.allItems[id].date,
         };
         this.saveItems(newState.allItems);
         return {...newState};
@@ -304,6 +323,7 @@ class Main extends Component {
       totalSpent,
       expenseDescription,
       expenseAmount,
+      expenseDate,
       expenseCategory,
     } = this.state;
     return (
@@ -355,6 +375,7 @@ class Main extends Component {
                         expenseCategory={expenseCategory}
                         expenseName={expenseDescription}
                         expenseAmount={expenseAmount}
+                        expenseDate={expenseDate}
                         toggleAddExpenses={this.toggleAddExpenses}
                         addExpenses={addExpenses}
                       />
@@ -365,6 +386,7 @@ class Main extends Component {
                       expenseCategory={expenseCategory}
                       expenseName={expenseDescription}
                       expenseAmount={expenseAmount}
+                      expenseDate={expenseDate}
                       onChangeText={this.newInputValue}
                       onDoneAddItem={this.onDoneAddItem}
                     />
@@ -379,6 +401,7 @@ class Main extends Component {
                       toggleEditExpense={this.toggleEditExpense}
                       expenseCategory={expenseCategory}
                       expenseName={expenseDescription}
+                      expenseDate={expenseDate}
                       expenseAmount={expenseAmount}
                       onChangeText={this.newInputValue}
                       onDoneAddItem={this.onDoneAddItem}
