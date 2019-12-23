@@ -4,11 +4,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import User from '../User';
 import styles from '../constants/styles';
 import firebase from 'firebase';
+import CourseHeader from '../components/Header/CourseHeader';
 
 class LoginScreen extends Component {
   static navigationOptions = {
-    header: null,
+    header: CourseHeader,
   };
+  
   state = {
     phone: '',
     name: '',

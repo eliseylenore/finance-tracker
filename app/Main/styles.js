@@ -14,10 +14,8 @@ export default (styles = StyleSheet.create({
   },
   centered: {
     alignItems: 'center',
-    marginTop: 40,
   },
   inputContainer: {
-    marginTop: 40,
     color: 'white',
   },
   text: {

@@ -68,7 +68,6 @@ export default (styles = StyleSheet.create({
     width: 90,
   },
   inputContainer: {
-    marginTop: 40,
     marginHorizontal: 15,
   },
 }));

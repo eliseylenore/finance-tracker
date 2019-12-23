@@ -11,8 +11,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import styles from '../constants/styles';
 import firebase from 'firebase';
 import Main from '../Main/Main';
+import CourseHeader from '../components/Header/CourseHeader';
 
 export default class HomeScreen extends Component {
+  static navigationOptions = {
+    header: CourseHeader,
+  };
+
   state = {
     users: [],
   };

@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Header from '../components/Header/Header';
 import ExpenseInput from '../components/ExpenseInput/ExpenseInput';
 import AddExpensesButton from '../components/ExpenseInput/AddExpensesButton';
 import ExpensesList from '../components/ExpensesList/ExpensesList';
@@ -19,7 +18,6 @@ import uuid from 'uuid/v1';
 import styles from './styles';
 import convertToDollars from '../utils/currency';
 import SubTitle from '../components/Subtitle/Subtitle';
-const headerTitle = 'Finance Tracker';
 import firebaseConfig from '../constants/firebaseConfig';
 import firebase from 'firebase';
 import User from '../User';
@@ -337,9 +335,6 @@ class Main extends Component {
     return (
       <View style={styles.background}>
         <StatusBar barStyle="light-content" style={styles.container} />
-        <View style={styles.centered}>
-          <Header title={headerTitle} />
-        </View>
         {spendingGoal ? (
           <View>
             <View style={styles.inputContainer}>
