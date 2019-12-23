@@ -22,6 +22,7 @@ import SubTitle from '../components/Subtitle/Subtitle';
 const headerTitle = 'Finance Tracker';
 import firebaseConfig from '../constants/firebaseConfig';
 import firebase from 'firebase';
+import User from '../User';
 import moment from 'moment';
 
 class Main extends Component {
@@ -37,7 +38,7 @@ class Main extends Component {
       expenseDescription: '',
       expenseAmount: '',
       expenseCategory: '',
-      expenseDate: new Date(),
+      expenseDate: new moment().format('l'),
       loadingItems: false,
       allItems: {},
       totalSpent: 0,
@@ -122,7 +123,7 @@ class Main extends Component {
             console.log('adding');
             firebase
               .database()
-              .ref('expenses' + expenseToEdit.id)
+              .ref('expenses/' + User.phone + '/' + expenseToEdit.id)
               .set(itemObject);
             let prevAmount = prevState.allItems[expenseToEdit.id].amount;
             prevState.allItems[expenseToEdit.id] = itemObject;
@@ -159,7 +160,7 @@ class Main extends Component {
             };
             firebase
               .database()
-              .ref('expenses' + id)
+              .ref('expenses/' + User.phone + '/' + id)
               .set(newItemObject[id]);
             const newState = {
               ...prevState,
@@ -198,7 +199,7 @@ class Main extends Component {
           spendingGoal: parseFloat(spendingGoalInput),
         });
       }
-      this.saveGoal(spendingGoalInput);
+      this.saveGoal(parseFloat(spendingGoalInput));
     }
   };
 
@@ -207,6 +208,14 @@ class Main extends Component {
   };
 
   saveGoal = newItem => {
+    let date = new Date();
+    let year = date.getYear();
+    let month = date.getMonth();
+
+    firebase
+      .database()
+      .ref('goals/' + User.phone + '/' + year + '/' + month)
+      .set(JSON.stringify(newItem));
     const saveItem = AsyncStorage.setItem('Goal', JSON.stringify(newItem));
   };
 

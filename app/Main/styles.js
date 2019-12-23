@@ -9,14 +9,8 @@ export default (styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  container: {
-    flex: 1,
-  },
   background: {
     flex: 1,
-    backgroundColor: bg,
-    paddingLeft: 15,
-    paddingRight: 15,
   },
   centered: {
     alignItems: 'center',

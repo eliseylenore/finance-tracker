@@ -4,6 +4,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import {deleteIconColor} from '../../utils/colors';
 import convertToDollars from '../../utils/currency';
+import firebase from 'firebase'
+
 class ExpensesList extends Component {
   calculateDate(dateInMilliseconds) {
     let date = new Date(dateInMilliseconds);
