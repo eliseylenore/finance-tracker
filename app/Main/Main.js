@@ -23,7 +23,6 @@ const headerTitle = 'Finance Tracker';
 import firebaseConfig from '../constants/firebaseConfig';
 import firebase from 'firebase';
 import User from '../User';
-import moment from 'moment';
 
 class Main extends Component {
   constructor(props) {
@@ -38,7 +37,7 @@ class Main extends Component {
       expenseDescription: '',
       expenseAmount: '',
       expenseCategory: '',
-      expenseDate: new moment().format('l'),
+      expenseDate: new Date(),
       loadingItems: false,
       allItems: {},
       totalSpent: 0,
@@ -99,8 +98,8 @@ class Main extends Component {
       expenseToEdit,
       expenseCategory,
       expenseDate,
-      editGoal,
     } = this.state;
+    let newExpenseDate = Date.parse(expenseDate);
     if (!parseFloat(expenseAmount)) {
       Alert.alert('Error', 'Amount must be more than 0');
     } else if (expenseDescription.length < 3) {
@@ -118,12 +117,12 @@ class Main extends Component {
               description: expenseDescription,
               category: expenseCategory,
               amount: expenseAmount,
-              date: expenseDate,
+              date: newExpenseDate,
             };
             console.log('adding');
             firebase
               .database()
-              .ref('expenses/' + User.phone + '/' + expenseToEdit.id)
+              .ref('expenses/' + User.phone + '/' + expenseToEdit.date)
               .set(itemObject);
             let prevAmount = prevState.allItems[expenseToEdit.id].amount;
             prevState.allItems[expenseToEdit.id] = itemObject;
@@ -135,7 +134,7 @@ class Main extends Component {
               expenseDescription: '',
               expenseCategory: '',
               expenseToEdit: '',
-              expenseDate: new Date(),
+              expenseDate: newExpenseDate,
               totalSpent:
                 prevState.totalSpent + parseFloat(expenseAmount - prevAmount),
               allItems: {
@@ -155,12 +154,12 @@ class Main extends Component {
                 category: expenseCategory,
                 description: expenseDescription,
                 amount: expenseAmount,
-                date: expenseDate,
+                date: newExpenseDate,
               },
             };
             firebase
               .database()
-              .ref('expenses/' + User.phone + '/' + id)
+              .ref('expenses/' + User.phone + '/' + newItemObject[id].date)
               .set(newItemObject[id]);
             const newState = {
               ...prevState,

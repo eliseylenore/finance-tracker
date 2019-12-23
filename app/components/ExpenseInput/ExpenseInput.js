@@ -182,9 +182,9 @@ class ExpenseInput extends Component {
             date={expenseDate}
             mode="date"
             placeholder="select date"
-            format="l"
-            minDate="01/01/2019"
-            maxDate="01/01/2029"
+            format="YYYY-MM-DD"
+            minDate="2019-01-01"
+            maxDate="2029-12-31"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{

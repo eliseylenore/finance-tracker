@@ -4,13 +4,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import {deleteIconColor} from '../../utils/colors';
 import convertToDollars from '../../utils/currency';
-import firebase from 'firebase'
+import firebase from 'firebase';
+import moment from 'moment';
 
 class ExpensesList extends Component {
   calculateDate(dateInMilliseconds) {
-    let date = new Date(dateInMilliseconds);
-    let dateString =
-      date.getMonth() + 1 + '/' + date.getDate() + '/' + (date.getYear() - 100);
+    let date = new moment(dateInMilliseconds);
+    let dateString = date.format('l');
     return dateString;
   }
 
@@ -41,7 +41,7 @@ class ExpensesList extends Component {
             color={deleteIconColor}
           />
           <Text style={[styles.text, styles.description]}>{description}</Text>
-          <Text style={styles.text}>{date}</Text>
+          <Text style={styles.text}>{this.calculateDate(date)}</Text>
           <Text style={[styles.text]}>
             {convertToDollars(parseFloat(amount))}
           </Text>
