@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {TextInput, Text, View, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import User from '../User';
-import styles from '../constants/styles';
+import globalStyles from '../constants/styles';
 import firebase from 'firebase';
 import CourseHeader from '../components/Header/CourseHeader';
 
@@ -10,7 +10,7 @@ class LoginScreen extends Component {
   static navigationOptions = {
     header: CourseHeader,
   };
-  
+
   state = {
     phone: '',
     name: '',
@@ -63,20 +63,22 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={globalStyles.container}>
         <TextInput
           placeholder="Phone Number"
-          style={styles.input}
+          style={[globalStyles.input, globalStyles.elevated]}
           onChangeText={this.handleChange('phone')}
           value={this.state.phone}
         />
         <TextInput
           placeholder="Name"
-          style={styles.input}
+          style={[globalStyles.input, globalStyles.elevated]}
           onChangeText={this.handleChange('name')}
           value={this.state.name}
         />
-        <TouchableOpacity onPress={this.submitForm}>
+        <TouchableOpacity
+          style={[globalStyles.button, globalStyles.elevated]}
+          onPress={this.submitForm}>
           <Text>Submit</Text>
         </TouchableOpacity>
       </View>

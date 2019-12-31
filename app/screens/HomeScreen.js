@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import User from '../User';
 import AsyncStorage from '@react-native-community/async-storage';
-import styles from '../constants/styles';
+import globalStyles from '../constants/styles';
 import firebase from 'firebase';
 import Main from '../Main/Main';
 import CourseHeader from '../components/Header/CourseHeader';
@@ -46,9 +46,15 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={globalStyles.container}>
         <Main />
-        <TouchableOpacity onPress={this._logout} style={styles.marginBottom}>
+        <TouchableOpacity
+          onPress={this._logout}
+          style={[
+            globalStyles.marginBottom,
+            globalStyles.button,
+            globalStyles.elevated,
+          ]}>
           <Text>Logout</Text>
         </TouchableOpacity>
       </SafeAreaView>

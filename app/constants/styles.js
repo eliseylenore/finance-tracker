@@ -2,22 +2,48 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {bg} from '../utils/colors';
 
-const styles = StyleSheet.create({
+const globalStyles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: bg,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
+    flex: 1,
   },
   input: {
-    padding: 10,
-    marginBottom: 5,
+    backgroundColor: 'white',
+    fontSize: 20,
+    color: 'grey',
+    fontWeight: '400',
+    paddingTop: 10,
+  },
+  elevated: {
+    paddingHorizontal: 15,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#CCC',
-    width: '80%',
+    alignItems: 'center',
+    marginVertical: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgb(50,50,50)',
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+          height: 2,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+  button: {
+    backgroundColor: 'white',
+    fontSize: 16,
+    fontWeight: '400',
+    paddingVertical: 10,
+    alignSelf: 'flex-start',
   },
   marginBottom: {
-    marginBottom: 50,
+    paddingBottom: 50,
   },
   userContainer: {
     padding: 10,
@@ -30,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default globalStyles;

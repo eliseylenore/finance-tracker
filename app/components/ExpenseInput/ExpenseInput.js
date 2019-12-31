@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {TextInput, Text, TouchableOpacity, View, Modal} from 'react-native';
 import styles from './styles';
+import globalStyles from '../../constants/styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {deleteIconColor, inputPlaceholder} from '../../utils/colors';
 import DatePicker from 'react-native-datepicker';
@@ -67,14 +68,14 @@ class ExpenseInput extends Component {
 
     return (
       <Modal animationType="slide">
-        <View style={styles.inputContainer}>
+        <View style={globalStyles.container}>
           <TouchableOpacity style={{alignSelf: 'flex-end'}}>
             <Text onPress={editExpense ? toggleEditExpense : toggleAddExpenses}>
-              <MaterialIcons name="clear" size={18} color="grey" />
+              <MaterialIcons name="clear" size={18} color="white" />
             </Text>
           </TouchableOpacity>
           <TextInput
-            style={[styles.input, styles.elevated]}
+            style={[globalStyles.input, globalStyles.elevated]}
             value={expenseName}
             placeholderTextColor={inputPlaceholder.toString()}
             placeholder="Description"
@@ -82,7 +83,7 @@ class ExpenseInput extends Component {
           />
 
           <TextInput
-            style={[styles.input, styles.elevated]}
+            style={[globalStyles.input, globalStyles.elevated]}
             value={expenseAmount}
             onChangeText={onChangeText('expenseAmount')}
             placeholder="Amount"
@@ -98,8 +99,8 @@ class ExpenseInput extends Component {
           />
           <TouchableOpacity
             style={[
-              styles.elevated,
-              styles.input,
+              globalStyles.elevated,
+              globalStyles.input,
               {
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -119,7 +120,7 @@ class ExpenseInput extends Component {
               ) : null}
               <Text
                 style={[
-                  styles.input,
+                  globalStyles.input,
                   {paddingTop: 0},
                   {color: !expenseCategory ? inputPlaceholder : 'grey'},
                 ]}>
@@ -147,7 +148,7 @@ class ExpenseInput extends Component {
                 },
                 styles.modalElevated,
               ]}>
-              <Text style={[styles.input, {fontWeight: 'bold'}]}>
+              <Text style={[globalStyles.input, {fontWeight: 'bold'}]}>
                 Categories
               </Text>
               {pickerValues.map((value, index) => {
@@ -165,20 +166,23 @@ class ExpenseInput extends Component {
                     }>
                     {value.title !== 'None' ? (
                       <MaterialIcons
-                        style={styles.input}
+                        style={globalStyles.input}
                         name={pickerIcons[value.title]}
                         size={24}
                         color={deleteIconColor}
                       />
                     ) : null}
-                    <Text style={styles.input}> {value.title} </Text>
+                    <Text style={globalStyles.input}> {value.title} </Text>
                   </TouchableOpacity>
                 );
               })}
             </View>
           </Modal>
           <DatePicker
-            style={{width: 200}}
+            style={[
+              {width: 200, backgroundColor: 'white', paddingVertical: 10},
+              globalStyles.elevated,
+            ]}
             date={expenseDate}
             mode="date"
             placeholder="select date"
@@ -201,7 +205,8 @@ class ExpenseInput extends Component {
             }}
             onDateChange={onChangeText('expenseDate')}
           />
-          <TouchableOpacity style={[styles.submitButton, styles.elevated]}>
+          <TouchableOpacity
+            style={[globalStyles.button, globalStyles.elevated]}>
             <Text onPress={onDoneAddItem}>Submit</Text>
           </TouchableOpacity>
         </View>
