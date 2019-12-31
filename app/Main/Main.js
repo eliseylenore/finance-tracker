@@ -37,7 +37,7 @@ class Main extends Component {
       expenseCategory: '',
       expenseDate: new Date(),
       loadingItems: false,
-      allItems: {},
+      allItems: [],
       totalSpent: 0,
       isCompleted: false,
       addExpenses: false,
@@ -48,7 +48,6 @@ class Main extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-
     this.loadingItem();
   };
 
@@ -75,13 +74,21 @@ class Main extends Component {
 
   loadingItem = async () => {
     try {
-      const allItems = await AsyncStorage.getItem('Todos');
+      let dbRef = firebase.database().ref('expenses/' + User.phone);
+      dbRef.on('child_added', newExpense => {
+        let expense = newExpense.val();
+        this.setState(prevState => {
+          return {
+            allItems: [...prevState.allItems, expense],
+          };
+        });
+      });
+      // const allItems = await AsyncStorage.getItem('Todos');
       const goal = await AsyncStorage.getItem('Goal');
-      const totalSpent = this.findTotalSpent(JSON.parse(allItems) || {});
+      const totalSpent = this.findTotalSpent(this.state.allItems || {});
       this.setState({
         totalSpent: totalSpent,
         loadingItems: true,
-        allItems: JSON.parse(allItems) || {},
         spendingGoal: JSON.parse(goal),
       });
     } catch (err) {
@@ -120,7 +127,7 @@ class Main extends Component {
             console.log('adding');
             firebase
               .database()
-              .ref('expenses/' + User.phone + '/' + expenseToEdit.date)
+              .ref('expenses/' + User.phone + '/' + expenseToEdit.id)
               .set(itemObject);
             let prevAmount = prevState.allItems[expenseToEdit.id].amount;
             prevState.allItems[expenseToEdit.id] = itemObject;
@@ -157,7 +164,7 @@ class Main extends Component {
             };
             firebase
               .database()
-              .ref('expenses/' + User.phone + '/' + newItemObject[id].date)
+              .ref('expenses/' + User.phone + '/' + newItemObject[id].id)
               .set(newItemObject[id]);
             const newState = {
               ...prevState,
