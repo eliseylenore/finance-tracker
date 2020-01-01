@@ -22,23 +22,6 @@ export default class HomeScreen extends Component {
     users: [],
   };
 
-  // componentDidMount() {
-  //   let dbRef = firebase.database().ref('users');
-  //   dbRef.on('child_added', newUser => {
-  //     let person = newUser.val();
-  //     person.phone = newUser.key;
-  //     if (person.phone === User.phone) {
-  //       User.name = person.name;
-  //     } else {
-  //       this.setState(prevState => {
-  //         return {
-  //           users: [...prevState.users, person],
-  //         };
-  //       });
-  //     }
-  //   });
-  // }
-
   _logout = async () => {
     await AsyncStorage.clear();
     this.props.navigation.navigate('Auth');

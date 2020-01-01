@@ -20,6 +20,7 @@ import convertToDollars from '../utils/currency';
 import SubTitle from '../components/Subtitle/Subtitle';
 import firebaseConfig from '../constants/firebaseConfig';
 import firebase from 'firebase';
+import moment from 'moment';
 import User from '../User';
 
 class Main extends Component {
@@ -35,9 +36,9 @@ class Main extends Component {
       expenseDescription: '',
       expenseAmount: '',
       expenseCategory: '',
-      expenseDate: new Date(),
+      expenseDate: Date.now(),
       loadingItems: false,
-      allItems: [],
+      allItems: {},
       totalSpent: 0,
       isCompleted: false,
       addExpenses: false,
@@ -78,8 +79,9 @@ class Main extends Component {
       dbRef.on('child_added', newExpense => {
         let expense = newExpense.val();
         this.setState(prevState => {
+          prevState.allItems[expense.id] = expense;
           return {
-            allItems: [...prevState.allItems, expense],
+            ...prevState.allItems,
           };
         });
       });
