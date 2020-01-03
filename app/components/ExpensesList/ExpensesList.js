@@ -8,23 +8,16 @@ import firebase from 'firebase';
 import moment from 'moment';
 
 class ExpensesList extends Component {
-  calculateDate(dateInMilliseconds) {
-    let date = new moment(dateInMilliseconds);
-    let dateString = date.format('l');
-    return dateString;
-  }
-
   render() {
     MaterialIcons.loadFont();
     const {
       description,
       amount,
       category,
-      date,
       deleteItem,
       id,
-      createdAt,
       toggleEditExpense,
+      date,
     } = this.props;
     const pickerIcons = {
       Rent: 'home',
@@ -41,7 +34,7 @@ class ExpensesList extends Component {
             color={deleteIconColor}
           />
           <Text style={[styles.text, styles.description]}>{description}</Text>
-          <Text style={styles.text}>{this.calculateDate(date)}</Text>
+          <Text style={styles.text}>{date}</Text>
           <Text style={[styles.text]}>
             {convertToDollars(parseFloat(amount))}
           </Text>

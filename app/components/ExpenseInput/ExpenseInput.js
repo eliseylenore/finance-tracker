@@ -5,6 +5,7 @@ import globalStyles from '../../constants/styles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {deleteIconColor, inputPlaceholder} from '../../utils/colors';
 import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 
 class ExpenseInput extends Component {
   constructor(props) {
@@ -15,6 +16,11 @@ class ExpenseInput extends Component {
       mode: 'date',
       show: false,
     };
+  }
+
+  componentDidMount() {
+    console.log('moment date:', moment.unix());
+    console.log('moment date:', moment(this.props.expenseDate).format('L'));
   }
 
   togglePicker() {
@@ -183,12 +189,12 @@ class ExpenseInput extends Component {
               {width: 200, backgroundColor: 'white', paddingVertical: 10},
               globalStyles.elevated,
             ]}
-            date={expenseDate}
+            date={moment(expenseDate).format('L')}
             mode="date"
             placeholder="select date"
-            format="YYYY-MM-DD"
-            minDate="2019-01-01"
-            maxDate="2029-12-31"
+            format="L"
+            minDate="01/01/2010"
+            maxDate="12/31/2030"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{

@@ -36,7 +36,7 @@ class Main extends Component {
       expenseDescription: '',
       expenseAmount: '',
       expenseCategory: '',
-      expenseDate: Date.now(),
+      expenseDate: moment().format('l'),
       loadingItems: false,
       allItems: {},
       totalSpent: 0,
@@ -59,14 +59,6 @@ class Main extends Component {
     });
   };
 
-  findTotalSpent(allItems) {
-    let totalSpent = 0;
-    for (var item in allItems) {
-      totalSpent += parseFloat(allItems[item].amount);
-    }
-    return totalSpent;
-  }
-
   newGoalValue = value => {
     this.setState({
       spendingGoalInput: value,
@@ -80,6 +72,7 @@ class Main extends Component {
         let expense = newExpense.val();
         this.setState(prevState => {
           prevState.allItems[expense.id] = expense;
+          prevState.totalSpent += parseFloat(expense.amount);
           return {
             ...prevState.allItems,
           };
@@ -87,9 +80,7 @@ class Main extends Component {
       });
       // const allItems = await AsyncStorage.getItem('Todos');
       const goal = await AsyncStorage.getItem('Goal');
-      const totalSpent = this.findTotalSpent(this.state.allItems || {});
       this.setState({
-        totalSpent: totalSpent,
         loadingItems: true,
         spendingGoal: JSON.parse(goal),
       });
@@ -106,7 +97,6 @@ class Main extends Component {
       expenseCategory,
       expenseDate,
     } = this.state;
-    let newExpenseDate = Date.parse(expenseDate);
     if (!parseFloat(expenseAmount)) {
       Alert.alert('Error', 'Amount must be more than 0');
     } else if (expenseDescription.length < 3) {
@@ -124,7 +114,7 @@ class Main extends Component {
               description: expenseDescription,
               category: expenseCategory,
               amount: expenseAmount,
-              date: newExpenseDate,
+              date: expenseDate,
             };
             console.log('adding');
             firebase
@@ -141,7 +131,7 @@ class Main extends Component {
               expenseDescription: '',
               expenseCategory: '',
               expenseToEdit: '',
-              expenseDate: newExpenseDate,
+              expenseDate: expenseDate,
               totalSpent:
                 prevState.totalSpent + parseFloat(expenseAmount - prevAmount),
               allItems: {
@@ -161,7 +151,7 @@ class Main extends Component {
                 category: expenseCategory,
                 description: expenseDescription,
                 amount: expenseAmount,
-                date: newExpenseDate,
+                date: expenseDate,
               },
             };
             firebase
