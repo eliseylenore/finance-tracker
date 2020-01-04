@@ -28,6 +28,8 @@ class Main extends Component {
     super(props);
 
     this.state = {
+      month: moment().format('M'),
+      year: moment().format('YYYY'),
       spendingGoal: '',
       spendingGoalInput: '',
       editGoal: false,
@@ -37,7 +39,8 @@ class Main extends Component {
       expenseAmount: '',
       expenseCategory: '',
       expenseDate: moment().format('l'),
-      loadingItems: false,
+      isDoneLoadingItems: false,
+      isDoneLoadingGoal: false,
       allItems: {},
       totalSpent: 0,
       isCompleted: false,
@@ -49,7 +52,8 @@ class Main extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-    this.loadingItem();
+    this.loadingGoal();
+    this.loadingItems();
   };
 
   newInputValue = key => val => {
@@ -65,24 +69,38 @@ class Main extends Component {
     });
   };
 
-  loadingItem = async () => {
+  loadingGoal = () => {
     try {
-      let dbRef = firebase.database().ref('expenses/' + User.phone);
+      let dbRefGoal = firebase
+        .database()
+        .ref(
+          User.phone + '/' + this.state.year + '/' + this.state.month + '/goal',
+        );
+      dbRefGoal.on('value', newGoal => {
+        let goal = newGoal.val();
+        console.log('goal', goal);
+        this.setState({spendingGoal: goal, isDoneLoadingGoal: true});
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  loadingItems = () => {
+    try {
+      let dbRef = firebase.database().ref(User.phone + '/expenses/');
       dbRef.on('child_added', newExpense => {
+        console.log('loading items');
         let expense = newExpense.val();
         this.setState(prevState => {
           prevState.allItems[expense.id] = expense;
           prevState.totalSpent += parseFloat(expense.amount);
+          prevState.isDoneLoadingItems = true;
+          console.log('got items');
           return {
             ...prevState.allItems,
           };
         });
-      });
-      // const allItems = await AsyncStorage.getItem('Todos');
-      const goal = await AsyncStorage.getItem('Goal');
-      this.setState({
-        loadingItems: true,
-        spendingGoal: JSON.parse(goal),
       });
     } catch (err) {
       console.log(err);
@@ -156,7 +174,7 @@ class Main extends Component {
             };
             firebase
               .database()
-              .ref('expenses/' + User.phone + '/' + newItemObject[id].id)
+              .ref(User.phone + '/expenses/' + newItemObject[id].id)
               .set(newItemObject[id]);
             const newState = {
               ...prevState,
@@ -204,13 +222,13 @@ class Main extends Component {
   };
 
   saveGoal = newItem => {
-    let date = new Date();
-    let year = date.getYear();
-    let month = date.getMonth();
+    let date = moment();
+    let year = date.format('YYYY');
+    let month = date.format('M');
 
     firebase
       .database()
-      .ref('goals/' + User.phone + '/' + year + '/' + month)
+      .ref(User.phone + '/' + this.state.year + '/' + month + '/goal')
       .set(JSON.stringify(newItem));
     const saveItem = AsyncStorage.setItem('Goal', JSON.stringify(newItem));
   };
@@ -323,7 +341,8 @@ class Main extends Component {
       spendingGoal,
       spendingGoalInput,
       editGoal,
-      loadingItems,
+      isDoneLoadingGoal,
+      isDoneLoadingItems,
       allItems,
       totalSpent,
       expenseDescription,
@@ -334,7 +353,7 @@ class Main extends Component {
     return (
       <View style={styles.background}>
         <StatusBar barStyle="light-content" style={styles.container} />
-        {spendingGoal ? (
+        {spendingGoal && isDoneLoadingItems && isDoneLoadingGoal ? (
           <View>
             <View style={styles.inputContainer}>
               <View style={styles.goalSpentContainer}>
@@ -342,7 +361,7 @@ class Main extends Component {
                   goal={spendingGoal}
                   toggleEditGoal={this.toggleEditGoal}
                 />
-                {loadingItems ? (
+                {isDoneLoadingItems ? (
                   <View style={styles.totalSpent}>
                     <SubTitle subtitle="Total spent" />
                     <Text
@@ -409,7 +428,7 @@ class Main extends Component {
                       onDoneAddItem={this.onDoneAddItem}
                     />
                   </View>
-                ) : loadingItems ? (
+                ) : isDoneLoadingItems ? (
                   <ScrollView contentContainerStyle={styles.scrollableList}>
                     <View style={styles.expensesHeaderContainer}>
                       {Object.keys(allItems).length ? (
@@ -440,14 +459,14 @@ class Main extends Component {
               </View>
             )}
           </View>
-        ) : (
+        ) : isDoneLoadingItems && !spendingGoal && isDoneLoadingGoal ? (
           <SpendingGoalInput
             editGoal={editGoal}
             spendingGoalInput={spendingGoalInput}
             onDoneAddGoal={this.onDoneAddGoal}
             onChangeText={this.newGoalValue}
           />
-        )}
+        ) : null}
       </View>
     );
   }
