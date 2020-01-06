@@ -79,7 +79,8 @@ class Main extends Component {
       dbRefGoal.on('value', newGoal => {
         let goal = newGoal.val();
         console.log('goal', goal);
-        this.setState({spendingGoal: goal, isDoneLoadingGoal: true});
+        this.setState({spendingGoal: goal});
+        this.setState({isDoneLoadingGoal: true});
       });
     } catch (err) {
       console.log(err);
@@ -88,19 +89,26 @@ class Main extends Component {
 
   loadingItems = () => {
     try {
-      let dbRef = firebase.database().ref(User.phone + '/expenses/');
+      console.log('loadingitems', this.state.year, this.state.day);
+      let dbRef = firebase
+        .database()
+        .ref(
+          User.phone + '/expenses/' + this.state.year + '/' + this.state.month,
+        );
       dbRef.on('child_added', newExpense => {
         console.log('loading items');
         let expense = newExpense.val();
         this.setState(prevState => {
           prevState.allItems[expense.id] = expense;
           prevState.totalSpent += parseFloat(expense.amount);
-          prevState.isDoneLoadingItems = true;
           console.log('got items');
           return {
             ...prevState.allItems,
           };
         });
+      });
+      this.setState({
+        isDoneLoadingItems: true,
       });
     } catch (err) {
       console.log(err);
@@ -115,6 +123,8 @@ class Main extends Component {
       expenseCategory,
       expenseDate,
     } = this.state;
+    let expenseYear = moment(expenseDate, 'L').year();
+    let expenseMonth = moment(expenseDate, 'L').month() + 1;
     if (!parseFloat(expenseAmount)) {
       Alert.alert('Error', 'Amount must be more than 0');
     } else if (expenseDescription.length < 3) {
@@ -134,11 +144,44 @@ class Main extends Component {
               amount: expenseAmount,
               date: expenseDate,
             };
-            console.log('adding');
             firebase
               .database()
-              .ref('expenses/' + User.phone + '/' + expenseToEdit.id)
+              .ref(
+                User.phone +
+                  '/expenses/' +
+                  expenseYear +
+                  '/' +
+                  expenseMonth +
+                  '/' +
+                  expenseToEdit.id,
+              )
               .set(itemObject);
+            let prevDate = prevState.allItems[expenseToEdit.id].date;
+            let prevExpenseYear = moment(prevDate, 'L').year();
+            let prevExpenseMonth = moment(prevDate, 'L').month() + 1;
+            if (
+              prevExpenseMonth !== expenseMonth ||
+              prevExpenseYear !== expenseYear
+            ) {
+              console.log(
+                'prevExpenseMonth',
+                prevExpenseMonth,
+                'prevExpenseYear',
+                prevExpenseYear,
+              );
+              firebase
+                .database()
+                .ref(
+                  User.phone +
+                    '/expenses/' +
+                    prevExpenseYear +
+                    '/' +
+                    prevExpenseMonth +
+                    '/' +
+                    expenseToEdit.id,
+                )
+                .remove();
+            }
             let prevAmount = prevState.allItems[expenseToEdit.id].amount;
             prevState.allItems[expenseToEdit.id] = itemObject;
             const newState = {
@@ -174,7 +217,15 @@ class Main extends Component {
             };
             firebase
               .database()
-              .ref(User.phone + '/expenses/' + newItemObject[id].id)
+              .ref(
+                User.phone +
+                  '/expenses/' +
+                  expenseYear +
+                  '/' +
+                  expenseMonth +
+                  '/' +
+                  newItemObject[id].id,
+              )
               .set(newItemObject[id]);
             const newState = {
               ...prevState,
@@ -353,6 +404,7 @@ class Main extends Component {
     return (
       <View style={styles.background}>
         <StatusBar barStyle="light-content" style={styles.container} />
+        <Text> {isDoneLoadingItems ? 'doneloading' : 'not done'}</Text>
         {spendingGoal && isDoneLoadingItems && isDoneLoadingGoal ? (
           <View>
             <View style={styles.inputContainer}>
